@@ -185,18 +185,13 @@ public class Map {
 
     public void printMap() {
         Location<Integer> currentLoc = depot;
-        while (currentLoc != null) {
-            System.out.println(currentLoc.toString());
-            currentLoc = currentLoc.nextLoc;
-        }
-
-
-        currentLoc = depot;
+        String dataLoc = "";
 
         while (currentLoc != null) {
             System.out.print("# " + currentLoc.ID + " : ");
             Path currentPath = currentLoc.firstPath;
 
+            dataLoc += currentLoc.toString() + "\n";
             while (currentPath != null) {
                 // go through all the paths from current location
                 System.out.print("[" + currentLoc.ID + " --" + currentPath.weight + "--> " + currentPath.toLoc.ID + "]");
@@ -207,5 +202,6 @@ public class Map {
 
             currentLoc = currentLoc.nextLoc;
         }
+        System.out.println(dataLoc);
     }
 }
