@@ -1,11 +1,16 @@
-public class Location {
+public class Location<T> extends Map {
     //the Location class refers to the vertices in the graph
     //note: the graph is complete, weighted (euclidean distance) and undirected.
-    private double x, y;
-    private int demand_size, ID;
-    private boolean visited;
+    protected double x, y;
+    protected int demand_size;
+    protected T ID;
 
-    public Location(double x, double y, int demand_size, int ID) {
+    protected int deg;
+    protected Location<Integer> nextLoc;
+    protected Path firstPath;
+    protected boolean visited;
+
+    public Location(double x, double y, int demand_size, T ID) {
         this.visited = false;
         this.x = x;
         this.y = y;
@@ -26,7 +31,7 @@ public class Location {
         return demand_size;
     }
 
-    public int getID() {
+    public T getID() {
         return ID;
     }
 
@@ -47,18 +52,17 @@ public class Location {
         this.demand_size = demand_size;
     }
 
-    public void setID(int ID) {
+    public void setID(T ID) {
         this.ID = ID;
     }
 
-    public Location visit() {
+    public Location<Integer> visit() {
         this.visited = true;
-        return this;
+        return (Location<Integer>) this;
     }
 
-    public Location unvisit() {
+    public void unvisit() {
         this.visited = false;
-        return this;
     }
 
     @Override
