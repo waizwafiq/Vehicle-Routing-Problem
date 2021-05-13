@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
     private static int N, C;
-    private static final String path = "D:\\_a_Lecture Notes FSKTM\\_Semester 2\\_WIA1002_DataStructures\\Projects\\src\\example.txt";
+    private static final String path = "insert path here";
     private static Location[] loc;
 
     public static void main(String[] args) {
