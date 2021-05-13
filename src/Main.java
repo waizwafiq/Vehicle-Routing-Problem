@@ -4,16 +4,13 @@ import java.util.Scanner;
 
 public class Main {
     private static int N, C;
-    private static final String path = "insert path here";
+    private static final String path = "D:\\_a_Lecture Notes FSKTM\\_Semester 2\\_WIA1002_DataStructures\\Projects\\src\\example.txt";
     private static Location[] loc;
 
     public static void main(String[] args) {
         readInputFile();
-        for (Location location : loc){
-            System.out.print(location.getID()+" ");
-            System.out.print(location.getX_coord()+" ");
-            System.out.print(location.getY_coord()+" ");
-            System.out.println(location.getDemand_size()+" ");
+        for (Location location : loc) {
+            System.out.println(location.toString());
         }
     }
 
