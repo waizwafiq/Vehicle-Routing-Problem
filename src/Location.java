@@ -24,4 +24,14 @@ public class Location {
     public int getID() {
         return ID;
     }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "x_coord=" + x_coord +
+                ", y_coord=" + y_coord +
+                ", demand_size=" + demand_size +
+                ", ID=" + ID +
+                '}';
+    }
 }
