@@ -1,7 +1,7 @@
 public class Map {
     /*
     Graph : Map.java
-    Vertex: Location.java
+    Loc: Location.java
     Edge  : Path.java
      */
 
@@ -12,7 +12,7 @@ public class Map {
     }
 
     public int getSize() {
-        //returns the number of locations in the graph
+        //returns the number of locations in the map
         return size;
     }
 
@@ -82,5 +82,130 @@ public class Map {
         }
 
         return -1; // not found
+    }
+
+    public boolean addLoc(double x, double y, int demand, int ID_num) {
+        if (!hasLocation(ID_num)) {
+            Location<Integer> currentLoc = depot; // starting from head location
+
+            Location<Integer> newLoc = new Location<>(x, y, demand, ID_num);
+
+            if (depot == null) {
+                // if the map is empty, the new location is the head of the map
+                depot = newLoc;
+            } else {
+                // if the map is not empty
+                while (currentLoc.nextLoc != null) // traverse until currentLoc is the final location
+                    currentLoc = currentLoc.nextLoc;
+
+                currentLoc.nextLoc = newLoc; // add the new location next to the final location
+                // the new location is going to be the new final location
+            }
+            size++; // increase the number of locations in the map
+            return true;
+        } else
+            return false;
+    }
+
+    public boolean addEdge(int sourceID, int destinationID, double weight) {
+        if (depot == null)
+            //if the map is empty OR the source and destination locations don't exist
+            return false;
+
+        Location<Integer> sourceLoc = depot;
+
+        while (sourceLoc != null) {
+            if (sourceLoc.ID.compareTo(sourceID) == 0) {
+                // traverse until it reaches the source location
+                // search for destination location
+                Location<Integer> destinationLoc = depot;
+
+                while (destinationLoc != null) {
+                    if (destinationLoc.ID.compareTo(destinationID) == 0) {
+                        // traverse until destination location
+                        Path currentEdge = sourceLoc.firstPath;
+                        Path newEdge = new Path(destinationLoc, weight, currentEdge);
+
+                        //add the new path connected from the source location to dest loc
+                        sourceLoc.firstPath = newEdge;
+                        sourceLoc.deg++;
+                        destinationLoc.deg++;
+                        return true;
+                    }
+
+                    destinationLoc = destinationLoc.nextLoc;
+                }
+            }
+
+            sourceLoc = sourceLoc.nextLoc;
+        }
+        return false;
+    }
+
+    public void unvisitAll() {
+        Location<Integer> currentLoc = depot;
+
+        while (currentLoc != null) {
+            currentLoc.unvisit();
+            currentLoc = currentLoc.nextLoc;
+        }
+    }
+
+    public void completeConnect() {
+        Location<Integer> v1 = depot.visit(); //starting from the depot
+        //NOTE: visit() is to avoid loop (location connects to itself)
+
+        while (v1 != null) {
+            Location<Integer> v2 = depot; //starting from the depot
+
+            while (v2 != null) {
+                if (v2.isVisited()) {
+                    //if the location has been visited, go to the next location
+                    v2 = v2.nextLoc;
+                    continue;
+                }
+                //add the path here
+                //addUnweightedEdge() is not used here because of multiple paths connections
+                addEdge(v1.ID, v2.ID, dist(v1, v2)); //put weight here?
+                v2 = v2.nextLoc; //go to the next location
+            }
+            unvisitAll(); //reset the visited variable
+            if (v1.nextLoc == null) //to avoid NullPointerException
+                break;
+
+            v1 = v1.nextLoc.visit(); //visit the next variable
+        }
+    }
+
+    private double dist(Location<Integer> v1, Location<Integer> v2) {
+        double dX = v1.getX() - v2.getX();
+        double dY = v1.getY() - v2.getY();
+        return Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+    }
+
+    public void printMap() {
+        Location<Integer> currentLoc = depot;
+        while (currentLoc != null) {
+            System.out.println(currentLoc.toString());
+            currentLoc = currentLoc.nextLoc;
+        }
+
+
+        currentLoc = depot;
+
+        while (currentLoc != null) {
+            System.out.print("# " + currentLoc.ID + " : ");
+            Path currentPath = currentLoc.firstPath;
+
+            while (currentPath != null) {
+                // go through all the paths from current location
+                System.out.print("[" + currentLoc.ID + " --" + currentPath.weight + "--> " + currentPath.toLoc.ID + "]");
+
+                currentPath = currentPath.nextPath;
+            }
+            System.out.println();
+
+            currentLoc = currentLoc.nextLoc;
+        }
     }
 }
