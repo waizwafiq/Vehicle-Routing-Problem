@@ -1,21 +1,21 @@
-public class Path {
-    private Location toVertex;
-    private double weight;
-    private Path nextEdge;
+public class Path extends Map {
+    protected Location<Integer> toLoc;
+    protected double weight;
+    protected Path nextPath;
 
     public Path() {
 
     }
 
-    public Path(Location toVertex, double weight, Path nextEdge) {
-        this.toVertex = toVertex;
+    public Path(Location<Integer> toLoc, double weight, Path nextPath) {
+        this.toLoc = toLoc;
         this.weight = weight;
-        this.nextEdge = nextEdge;
+        this.nextPath = nextPath;
     }
 
     //GETTERS
-    public Location getToVertex() {
-        return toVertex;
+    public Location<Integer> getToVertex() {
+        return toLoc;
     }
 
     public double getWeight() {
@@ -23,19 +23,19 @@ public class Path {
     }
 
     public Path getNextEdge() {
-        return nextEdge;
+        return nextPath;
     }
 
     //SETTERS
-    public void setToVertex(Location toVertex) {
-        this.toVertex = toVertex;
+    public void setToVertex(Location<Integer> toLoc) {
+        this.toLoc = toLoc;
     }
 
     public void setWeight(double weight) {
         this.weight = weight;
     }
 
-    public void setNextEdge(Path nextEdge) {
-        this.nextEdge = nextEdge;
+    public void setNextEdge(Path nextPath) {
+        this.nextPath = nextPath;
     }
 }
