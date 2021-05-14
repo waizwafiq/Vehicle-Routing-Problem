@@ -1,12 +1,11 @@
 package GraphComponent;
 
 import map.Graph;
-
 import java.util.ArrayList;
 
 public class Vertex extends Graph {
-    public int coordinateX;
-    public int coordinateY;
+    public double coordinateX;
+    public double coordinateY;
     public int ID;
     public int capacity;
 
@@ -16,7 +15,7 @@ public class Vertex extends Graph {
 
     }
 
-    public Vertex(int coordinateX, int coordinateY, int capacity, int ID) {
+    public Vertex(double coordinateX, double coordinateY, int capacity, int ID) {
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
         this.ID = ID;
@@ -31,8 +30,8 @@ public class Vertex extends Graph {
 
     @Override
     public String toString() {
-        return "Vertex{" +
+        return "{" +
                 "ID=" + ID +
-                '}';
+                "} ";
     }
 }
