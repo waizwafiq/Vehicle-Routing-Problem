@@ -1,7 +1,6 @@
 package GraphComponent;
 
 public class Edge {
-
     Vertex destination;
     double distance;
 
