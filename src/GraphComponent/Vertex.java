@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Vertex {
     public double coordinateX, coordinateY;
     public int capacity, ID;
+    public boolean visited = false;
 
     public ArrayList<Edge> EdgeList;
 
@@ -17,7 +18,20 @@ public class Vertex {
         this.ID = ID;
         this.capacity = capacity;
         EdgeList = new ArrayList<>();
+    }
 
+    public int visit() {
+        visited = true;
+        return this.ID;
+    }
+
+    public int unvisit() {
+        visited = false;
+        return this.ID;
+    }
+
+    public boolean isVisited() {
+        return visited;
     }
 
     @Override

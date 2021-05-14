@@ -1,6 +1,7 @@
 package map;
 
 import GraphComponent.*;
+
 import java.util.ArrayList;
 
 public class Graph {
@@ -28,7 +29,7 @@ public class Graph {
                 if (sourceVertex.ID != destination.ID)
                 /*(sourceVertex.ID == (destination.ID)) {
                     //maybe for future use?
-                } else */{
+                } else */ {
                     //avoid duplication
                     Edge newEdge = new Edge(destination, dist);
 
