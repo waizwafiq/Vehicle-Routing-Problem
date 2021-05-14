@@ -1,16 +1,16 @@
 package GraphComponent;
 
 public class Edge {
-    Vertex destination;
-    double distance;
+    Vertex destination; //holds destination vertex (toVertex)
+    double dist;
 
-    public Edge(Vertex destination, double distance) {
+    public Edge(Vertex destination, double dist) {
         this.destination = destination;
-        this.distance = distance;
+        this.dist = dist;
     }
 
     @Override
     public String toString() {
-        return "->" + destination + "d=" + distance;
+        return "|->" + destination + "d=" + dist;
     }
 }

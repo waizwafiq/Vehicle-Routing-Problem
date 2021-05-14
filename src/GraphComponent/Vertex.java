@@ -3,10 +3,8 @@ package GraphComponent;
 import java.util.ArrayList;
 
 public class Vertex {
-    public double coordinateX;
-    public double coordinateY;
-    public int ID;
-    public int capacity;
+    public double coordinateX, coordinateY;
+    public int capacity, ID;
 
     public ArrayList<Edge> EdgeList;
 
@@ -20,10 +18,6 @@ public class Vertex {
         this.capacity = capacity;
         EdgeList = new ArrayList<>();
 
-    }
-
-    public void printEdges() {
-        //EdgeList.toString();
     }
 
     @Override
