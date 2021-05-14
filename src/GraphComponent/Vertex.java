@@ -1,9 +1,8 @@
 package GraphComponent;
 
-import map.Graph;
 import java.util.ArrayList;
 
-public class Vertex extends Graph {
+public class Vertex {
     public double coordinateX;
     public double coordinateY;
     public int ID;
@@ -12,7 +11,6 @@ public class Vertex extends Graph {
     public ArrayList<Edge> EdgeList;
 
     public Vertex() {
-
     }
 
     public Vertex(double coordinateX, double coordinateY, int capacity, int ID) {
@@ -24,14 +22,12 @@ public class Vertex extends Graph {
 
     }
 
-    public void printEdges (){
-        EdgeList.toString();
+    public void printEdges() {
+        //EdgeList.toString();
     }
 
     @Override
     public String toString() {
-        return "{" +
-                "ID=" + ID +
-                "} ";
+        return "{ID " + ID + "} ";
     }
 }
