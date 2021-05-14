@@ -19,14 +19,14 @@ public class Graph {
     }
 
     public void addAllEdge() {
+        //to make a complete graph
         for (int i = 0; i < vertexArrayList.size(); i++) {
             Vertex sourceVertex = vertexArrayList.get(i);
-            for (int j = 0; j < vertexArrayList.size(); j++) {
-                Vertex destination = vertexArrayList.get(j);
+            for (Vertex destination : vertexArrayList) {
                 double dist = computeDistance(sourceVertex, destination);
 
                 if (sourceVertex.ID == (destination.ID)) {
-
+                    //maybe for future use?
                 } else {
                     Edge newEdge = new Edge(destination, dist);
 
@@ -39,15 +39,15 @@ public class Graph {
     }
 
     public void printAllVertexEdges() {
-        for (int i = 0; i < vertexArrayList.size(); i++) {
-            Vertex curr = vertexArrayList.get(i);
+        System.out.println(vertexArrayList.get(0));
+        for (Vertex curr : vertexArrayList) {
             System.out.println("Vertex ID" + curr.ID + " " + curr.EdgeList.toString());
         }
     }
 
     double computeDistance(Vertex v1, Vertex v2) {
-        int x = v1.coordinateX - v2.coordinateX;
-        int y = v1.coordinateY - v2.coordinateY;
+        double x = v1.coordinateX - v2.coordinateX;
+        double y = v1.coordinateY - v2.coordinateY;
 
         return Math.sqrt((x * x) + (y * y));
     }
