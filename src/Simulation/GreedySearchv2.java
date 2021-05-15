@@ -6,15 +6,17 @@ import map.Graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
-public class GreedySearch {
+public class GreedySearchv2 {
+
     private static Graph G;
     private static int C;
     private static double tourCost = 0;
 
     public static void run(Graph G, int C) {
-        GreedySearch.G = G;
-        GreedySearch.C = C;
+        GreedySearchv2.G = G;
+        GreedySearchv2.C = C;
         System.out.println("---Greedy Search---\n");
         long start = System.nanoTime();
         String result = search();
@@ -54,6 +56,20 @@ public class GreedySearch {
                     Go to the chosen vertex using the chosen path.
         */
         //array of expected edge cost selected by each vertex, (initially +inf to get the minimum)
+
+        for(int i=0;i<G.size();i++){
+            ArrayList<Edge> e = G.getVertex(i).EdgeList;
+            Collections.sort(e);
+        }
+
+
+
+
+
+
+
+
+
         double[] costV = new double[G.size()];
         ArrayList<Integer> visitedID = new ArrayList<>(); //a list of visited vertices (based on ID) except depot
         StringBuilder outString = new StringBuilder();
@@ -74,18 +90,18 @@ public class GreedySearch {
             for (int i = 0; i < G.size(); i++) {
                 //go through every vertices in the graph
 
-
+                int tempCap = 0; //holds temp capacity to subtract at dT
                 for (int j = 0; j < currentVertex.EdgeList.size(); j++) {
                     //go through every edges connected to current vertex
                     Edge currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge
 
-                    if (tempC >= currentEdge.destination.capacity && currentEdge.dist < costV[i] && !visitedID.contains(currentEdge.destination.ID)) {
+                    if (tempC >= currentEdge.destination.capacity && dT + currentEdge.dist < costV[i] && !visitedID.contains(currentEdge.destination.ID)) {
                         /* IF (capacity >= demand) AND (dT + dist < expected_path_dist) AND (the destination hasn't been visited yet):
                                 choose this path.
                         */
                         nextVertex = currentEdge.destination; // path to go
                         costV[i] = dT + currentEdge.dist ;  //update the path cost value the vertex holds
-
+                        tempCap = currentEdge.destination.capacity;
                     }
                 }
                 visitedID.add(nextVertex.ID); //the nextVertex has been visited.

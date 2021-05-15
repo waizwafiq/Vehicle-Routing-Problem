@@ -6,6 +6,7 @@ import GraphComponent.Vertex;
 import Simulation.A_star;
 import Simulation.Dijkstra;
 import Simulation.GreedySearch;
+import Simulation.GreedySearchv2;
 import map.Graph;
 
 public class Main {
@@ -22,6 +23,7 @@ public class Main {
         Dijkstra.run(map, C);
         A_star.run(map, C);
         GreedySearch.run(map,C);
+        GreedySearchv2.run(map,C);
 
     }
 
