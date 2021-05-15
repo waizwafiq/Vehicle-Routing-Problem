@@ -5,6 +5,7 @@ import java.util.Scanner;
 import GraphComponent.Vertex;
 import Simulation.A_star;
 import Simulation.Dijkstra;
+import Simulation.BestFirst;
 import map.Graph;
 
 public class Main {
@@ -20,6 +21,7 @@ public class Main {
         Dijkstra.run(map, C);
         Dijkstra.run(map, C);
         A_star.run(map, C);
+        BestFirst.run(map, C);
 
     }
 

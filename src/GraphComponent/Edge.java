@@ -11,6 +11,6 @@ public class Edge {
 
     @Override
     public String toString() {
-        return "|->" + destination + "d=" + dist;
+        return "|-> " + destination + "d=" + dist + "|| h=" + destination.capacity;
     }
 }
