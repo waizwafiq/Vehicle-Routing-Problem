@@ -17,9 +17,10 @@ public class Main {
 
         map.printConnections();
         System.out.println("\n\n\n");
-        //A_star.run(map, C);
-        //System.out.println();
+
         Dijkstra.run(map, C);
+        A_star.run(map, C);
+
     }
 
     public static void readInputFile() {

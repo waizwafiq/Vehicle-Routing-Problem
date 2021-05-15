@@ -11,21 +11,28 @@ public class Dijkstra {
 
     private static Graph G;
     private static int C;
+    private static double tourCost = 0;
 
     public static void run(Graph G, int C) {
         Dijkstra.G = G;
         Dijkstra.C = C;
-        search();
+        System.out.println("---Dijkstra's Search---\n");
+        long start = System.nanoTime();
+        String result = search();
+        long end = System.nanoTime();
+        System.out.println("Tour Cost: " + tourCost);
+        System.out.println(result);
+        System.out.println("Execution time: " + (double) (end - start) * Math.pow(10, -6) + "ms\n");
     }
 
-    private static void search() {
+    private static String search() {
         /*
         PSEUDOCODE?:
             Given a graph, G.
             While all vertices aren't visited:
                 Set dT as 0. (dT is the total distance travelled)
 
-                Let dV: the expected path each vertex take
+                Let dV: the expected path distance/weight each vertex take
                 Set dV = {+inf, +inf, +inf, ...}
 
                 Send a vehicle.
@@ -47,10 +54,12 @@ public class Dijkstra {
         //array of expected dist selected by each vertex, (initially +inf to get the minimum)
         double[] distV = new double[G.size()];
         ArrayList<Integer> visitedID = new ArrayList<>(); //a list of visited vertices (based on ID) except depot
+        StringBuilder outString = new StringBuilder();
 
+        int vehicleCount = 0;
         while (visitedID.size() != distV.length - 1) {
             //while all vertices haven't been visited
-            //EACH LOOP REPRESENTS ONE DELIVERY VEHICLE
+            outString.append("Vehicle ").append(++vehicleCount).append("\n"); //EACH LOOP REPRESENTS ONE DELIVERY VEHICLE
 
             double dT = 0; //the total distance travelled
             Arrays.fill(distV, Double.POSITIVE_INFINITY);
@@ -59,7 +68,7 @@ public class Dijkstra {
             Vertex nextVertex = G.getHead();
             int tempC = C; //to deduct the capacity in vehicle whenever a vertex is visited
 
-            System.out.print(currentVertex); //to print the depot
+            outString.append(currentVertex);
             for (int i = 0; i < G.size(); i++) {
                 //go through every vertices in the graph
                 for (int j = 0; j < currentVertex.EdgeList.size(); j++) {
@@ -75,7 +84,7 @@ public class Dijkstra {
                     }
                 }
                 visitedID.add(nextVertex.ID); //the nextVertex has been visited.
-                System.out.print(" --> " + nextVertex);
+                outString.append(" --> ").append(nextVertex);
 
                 //update the values
                 dT = distV[i]; //update total distance travelled
@@ -87,8 +96,10 @@ public class Dijkstra {
                     break;
             }
             visitedID.remove((Integer) 0); //used Integer to make it as an object
-            System.out.println();
-            System.out.println("dT : "+dT);
+            outString.append("\nCapacity: ").append(C - tempC);
+            outString.append("\nCost: ").append(dT).append("\n");
+            tourCost += dT;
         }
+        return outString.toString();
     }
 }
