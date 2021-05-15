@@ -3,11 +3,12 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 
 import GraphComponent.Vertex;
+import Simulation.A_star;
 import Simulation.Dijkstra;
 import map.Graph;
 
 public class Main {
-    private static final String path = "D:\\_a_Lecture Notes FSKTM\\_Semester 2\\_WIA1002_DataStructures\\Projects\\src\\example.txt";
+    private static final String path = "D:\\_a_Lecture Notes FSKTM\\_Semester 2\\_WIA1002_DataStructures\\AlwaysOnTime-Delivery\\src\\example.txt";
     private static int N, C;
     private static Graph map = new Graph();
 
@@ -16,6 +17,8 @@ public class Main {
 
         map.printConnections();
         System.out.println("\n\n\n");
+        //A_star.run(map, C);
+        //System.out.println();
         Dijkstra.run(map, C);
     }
 
