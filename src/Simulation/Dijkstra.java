@@ -15,10 +15,10 @@ public class Dijkstra {
     public static void run(Graph G, int C) {
         Dijkstra.G = G;
         Dijkstra.C = C;
-        search(G.getVertex(0), G.getVertex(0));
+        search();
     }
 
-    private static void search(Vertex start, Vertex end) {
+    private static void search() {
         /*
         PSEUDOCODE?:
             Given a graph, G.
