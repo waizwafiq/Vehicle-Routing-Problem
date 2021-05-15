@@ -90,7 +90,6 @@ public class BestFirst {
                         /* IF (capacity >= demand) AND (capacity < expected_path_cost) AND (the destination hasn't been visited yet) AND (the dest is not the depot):
                                 choose this path.
                         */
-
                         nextVertex = currentEdge.destination; // path to go
                         heurV[i] = currentEdge.destination.capacity;  //update the path cost value the vertex holds
                         tempD = dT + currentEdge.dist;
