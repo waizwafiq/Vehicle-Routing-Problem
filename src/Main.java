@@ -17,7 +17,7 @@ public class Main {
 
         map.printConnections();
         System.out.println("\n\n\n");
-
+        Dijkstra.run(map, C);
         Dijkstra.run(map, C);
         A_star.run(map, C);
 

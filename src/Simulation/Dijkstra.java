@@ -11,9 +11,10 @@ public class Dijkstra {
 
     private static Graph G;
     private static int C;
-    private static double tourCost = 0;
+    private static double tourCost;
 
     public static void run(Graph G, int C) {
+        tourCost = 0; //just in case if we want to do multiple Dijkstra searches (to reset)
         Dijkstra.G = G;
         Dijkstra.C = C;
         System.out.println("---Dijkstra's Search---\n");

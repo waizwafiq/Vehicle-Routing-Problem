@@ -11,9 +11,10 @@ public class A_star {
 
     private static Graph G;
     private static int C;
-    private static double tourCost = 0;
+    private static double tourCost;
 
     public static void run(Graph G, int C) {
+        tourCost = 0; //just in case if we want to do multiple A* searches (to reset)
         A_star.G = G;
         A_star.C = C;
         System.out.println("---A* Search---\n");
@@ -81,7 +82,7 @@ public class A_star {
                     Edge currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge
 
                     if (tempC >= currentEdge.destination.capacity && dT + currentEdge.dist + currentEdge.destination.capacity < costV[i] && !visitedID.contains(currentEdge.destination.ID)) {
-                        /* IF (capacity >= demand) AND (dT + dist < expected_path_dist) AND (the destination hasn't been visited yet):
+                        /* IF (capacity >= demand) AND (dT + dist + capacity < expected_path_cost) AND (the destination hasn't been visited yet):
                                 choose this path.
                         */
                         nextVertex = currentEdge.destination; // path to go
