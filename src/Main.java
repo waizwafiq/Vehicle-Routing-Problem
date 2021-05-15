@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 
 import GraphComponent.Vertex;
+import Simulation.Dijkstra;
 import map.Graph;
 
 public class Main {
@@ -14,6 +15,8 @@ public class Main {
         readInputFile();
 
         map.printConnections();
+        System.out.println("\n\n\n");
+        Dijkstra.run(map, C);
     }
 
     public static void readInputFile() {

@@ -6,7 +6,6 @@ public class Vertex {
     public double coordinateX, coordinateY;
     public int capacity, ID;
     public boolean visited = false;
-
     public ArrayList<Edge> EdgeList;
 
     public Vertex() {
@@ -20,14 +19,14 @@ public class Vertex {
         EdgeList = new ArrayList<>();
     }
 
-    public int visit() {
+    public Vertex visit() {
         visited = true;
-        return this.ID;
+        return this;
     }
 
-    public int unvisit() {
+    public Vertex unvisit() {
         visited = false;
-        return this.ID;
+        return this;
     }
 
     public boolean isVisited() {

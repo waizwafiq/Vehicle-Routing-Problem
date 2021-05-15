@@ -1,8 +1,8 @@
 package GraphComponent;
 
 public class Edge {
-    Vertex destination; //holds destination vertex (toVertex)
-    double dist;
+    public Vertex destination; //holds destination vertex (toVertex)
+    public double dist;
 
     public Edge(Vertex destination, double dist) {
         this.destination = destination;

@@ -11,12 +11,41 @@ public class Graph {
         vertexArrayList = new ArrayList<>();
     }
 
+    public int size() {
+        return vertexArrayList.size();
+    }
+
     public void addVertex(Vertex vertex) {
         vertexArrayList.add(vertex);
     }
 
     public Vertex getHead() {
         return vertexArrayList.get(0);
+    }
+
+    public Vertex getVertex(int idx) {
+        if(idx < 0 || idx >= size())
+            return null;
+
+        return vertexArrayList.get(idx);
+    }
+
+    public Vertex getLast() {
+        return vertexArrayList.get(vertexArrayList.size() - 1);
+    }
+
+    public void unvisitAll(){
+        for(Vertex V: vertexArrayList){
+            V.unvisit();
+        }
+    }
+
+    public boolean isAllVisited() {
+        boolean out = false;
+        for(Vertex V: vertexArrayList)
+            out = V.isVisited();
+
+        return out;
     }
 
     public void completeConnect() {
