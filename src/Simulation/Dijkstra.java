@@ -20,6 +20,7 @@ public class Dijkstra {
 
     private static void search(Vertex start, Vertex end) {
         /*
+        PSEUDOCODE:
             min = +infinity
             distV = {0, +inf, +inf, ...} <- for every vertices
             minEdge = null <-- the edge with the lowest dist connected from the vertex
@@ -36,32 +37,35 @@ public class Dijkstra {
         */
 
         double min = 0;
+
+        //array of shortest dist selected by each vertex, (initially +inf to get the minimum)
         double[] distV = new double[G.size()];
-        int tempC;
-        ArrayList<Integer> visitedID = new ArrayList<>();
+        ArrayList<Integer> visitedID = new ArrayList<>(); //a list of visited vertices (based on ID) except depot
 
-        while(visitedID.size() != distV.length-1) {
+        while (visitedID.size() != distV.length - 1) {
+            //while all vertices haven't been visited
+            //EACH LOOP REPRESENTS ONE DELIVERY VEHICLE
             Arrays.fill(distV, Double.POSITIVE_INFINITY);
-            Vertex currentVertex = G.getHead().unvisit();
+
+            Vertex currentVertex = G.getHead();
             Vertex nextVertex = G.getHead();
-            tempC = C;
+            int tempC = C; //to deduct the capacity in vehicle whenever a vertex is visited
 
-            System.out.print(currentVertex);
+            System.out.print(currentVertex); //to print the depot
             for (int i = 0; i < G.size(); i++) {
+                //go through every vertices in the graph
                 for (int j = 0; j < currentVertex.EdgeList.size(); j++) {
-                    Edge currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge connected to the vertex
-                    //System.out.println("\n"+currentVertex+"dest-> "+currentEdge.destination+"|| "+!currentEdge.destination.isVisited()+" ||| "+ (min + currentEdge.dist < distV[i]));
-                    if (!currentEdge.destination.isVisited() && tempC - currentEdge.destination.capacity >= 0 && min + currentEdge.dist < distV[i] && !visitedID.contains(currentEdge.destination.ID)) {
-                        //System.out.println(currentEdge.dist + " dist<");
-                        G.unvisitAll();
+                    //go through every edges connected to current vertex
+                    Edge currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge
 
-                        nextVertex = currentEdge.destination.visit();
+                    if (tempC >= currentEdge.destination.capacity && min + currentEdge.dist < distV[i] && !visitedID.contains(currentEdge.destination.ID)) {
+                        /* IF (capacity >= demand) AND (min + dist < chosen_path_dist) AND (the destination hasn't been visited yet):
+                                choose this path.
+                         */
+                        nextVertex = currentEdge.destination;
                         distV[i] = min + currentEdge.dist;
-
-                        //System.out.println("C : "+C);
                     }
                 }
-                //System.out.println("---------------");
                 visitedID.add(nextVertex.ID);
                 System.out.print(" --> " + nextVertex);
                 min = distV[i];
@@ -71,12 +75,7 @@ public class Dijkstra {
                 if (currentVertex.ID == 0)
                     break;
             }
-/*            for(Vertex V: G.vertexArrayList)
-                System.out.println(V+" "+V.isVisited());*/
-
             visitedID.remove((Integer) 0); //<-- make it as an object
-            /*for(int a: visitedID)
-                System.out.println("bb "+a);*/
             System.out.println();
         }
     }
