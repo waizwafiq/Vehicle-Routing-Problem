@@ -6,7 +6,7 @@ import GraphComponent.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//Dijkstra's Traversal Algorithm
+//Best-First Traversal Algorithm
 public class BestFirst {
 
     private static Graph G;

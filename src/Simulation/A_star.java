@@ -6,7 +6,7 @@ import GraphComponent.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//Dijkstra's Traversal Algorithm
+//A* Traversal Algorithm
 public class A_star {
 
     private static Graph G;
