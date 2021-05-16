@@ -7,7 +7,7 @@ import Simulation.*;
 import map.Graph;
 
 public class Main {
-    private static final String path = "D:\\_a_Lecture Notes FSKTM\\_Semester 2\\_WIA1002_DataStructures\\AlwaysOnTime-Delivery\\src\\example.txt";
+    private static final String path = "example.txt";
     private static int N, C;
     private static Graph map = new Graph();
 

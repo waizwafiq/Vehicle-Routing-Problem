@@ -45,7 +45,7 @@ public class BestPath {
                             update cV with the new expected total cost value
                             keep the chosen path's demand size to update dTs
                     Add the chosen vertex to go into the "visited" list
-                    Update the total distance travelled by the vehicle. (dT = dV - chosen_demand)
+                    Update the total distance travelled by the vehicle.
                     Deduct the capacity (send the package)
                     Go to the chosen vertex using the chosen path.
         */
