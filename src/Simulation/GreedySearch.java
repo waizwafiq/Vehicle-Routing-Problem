@@ -80,11 +80,11 @@ public class GreedySearch {
                     Edge currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge
 
                     if (tempC >= currentEdge.destination.capacity && currentEdge.dist < costV[i] && !visitedID.contains(currentEdge.destination.ID)) {
-                        /* IF (capacity >= demand) AND (dT + dist < expected_path_dist) AND (the destination hasn't been visited yet):
+                        /* IF (capacity >= demand) AND (dist < expected_path_dist) AND (the destination hasn't been visited yet):
                                 choose this path.
                         */
                         nextVertex = currentEdge.destination; // path to go
-                        costV[i] = dT + currentEdge.dist ;  //update the path cost value the vertex holds
+                        costV[i] = currentEdge.dist ;  //update the path cost value the vertex holds
 
                     }
                 }
@@ -92,7 +92,7 @@ public class GreedySearch {
                 outString.append(" --> ").append(nextVertex);
 
                 //update the values
-                dT = costV[i] ; //update total distance travelled
+                dT += costV[i] ; //update total distance travelled
                 tempC -= nextVertex.capacity; //deduct capacity
                 currentVertex = nextVertex;
 
