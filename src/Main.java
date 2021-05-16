@@ -23,6 +23,7 @@ public class Main {
         BestPath.run(map, C);
         BestPath_v2.run(map, C);
         GreedySearch.run(map, C);
+        DepthFirst.run(map, C);
 
     }
 
