@@ -3,9 +3,7 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 
 import GraphComponent.Vertex;
-import Simulation.A_star;
-import Simulation.Dijkstra;
-import Simulation.BestFirst;
+import Simulation.*;
 import map.Graph;
 
 public class Main {
@@ -18,10 +16,12 @@ public class Main {
 
         map.printConnections();
         System.out.println("\n\n\n");
-        Dijkstra.run(map, C);
+        //Dijkstra.run(map, C); //duplicate to get the best exec. time
         Dijkstra.run(map, C);
         A_star.run(map, C);
         BestFirst.run(map, C);
+        BestPath.run(map, C);
+        BestPath_v2.run(map, C);
 
     }
 

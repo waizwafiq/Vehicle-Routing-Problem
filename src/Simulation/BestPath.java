@@ -13,9 +13,9 @@ public class BestPath {
     private static double tourCost = 0;
 
     public static void run(Graph G, int C) {
-        GreedySearch.G = G;
-        GreedySearch.C = C;
-        System.out.println("---Greedy Search---\n");
+        BestPath.G = G;
+        BestPath.C = C;
+        System.out.println("---Best-Path Search---\n");
         long start = System.nanoTime();
         String result = search();
         long end = System.nanoTime();
@@ -80,7 +80,7 @@ public class BestPath {
                                 choose this path.
                         */
                         nextVertex = currentEdge.destination; // path to go
-                        costV[i] = currentEdge.dist ;  //update the path cost value the vertex holds
+                        costV[i] = currentEdge.dist;  //update the path cost value the vertex holds
 
                     }
                 }
@@ -88,7 +88,7 @@ public class BestPath {
                 outString.append(" --> ").append(nextVertex);
 
                 //update the values
-                dT += costV[i] ; //update total distance travelled
+                dT += costV[i]; //update total distance travelled
                 tempC -= nextVertex.capacity; //deduct capacity
                 currentVertex = nextVertex;
 

@@ -15,9 +15,9 @@ public class BestPath_v2 {
     private static double tourCost = 0;
 
     public static void run(Graph G, int C) {
-        GreedySearchv2.G = G;
-        GreedySearchv2.C = C;
-        System.out.println("---Greedy Search---\n");
+        BestPath_v2.G = G;
+        BestPath_v2.C = C;
+        System.out.println("---Best-Path 2.0 Search---\n");
         long start = System.nanoTime();
         String result = search();
         long end = System.nanoTime();
@@ -53,17 +53,10 @@ public class BestPath_v2 {
         */
         //array of expected edge cost selected by each vertex, (initially +inf to get the minimum)
 
-        for(int i=0;i<G.size();i++){
+        for (int i = 0; i < G.size(); i++) {
             ArrayList<Edge> e = G.getVertex(i).EdgeList;
             Collections.sort(e);
         }
-
-
-
-
-
-
-
 
 
         double[] costV = new double[G.size()];
@@ -96,7 +89,7 @@ public class BestPath_v2 {
                                 choose this path.
                         */
                         nextVertex = currentEdge.destination; // path to go
-                        costV[i] = dT + currentEdge.dist ;  //update the path cost value the vertex holds
+                        costV[i] = dT + currentEdge.dist;  //update the path cost value the vertex holds
                         tempCap = currentEdge.destination.capacity;
                     }
                 }
@@ -104,7 +97,7 @@ public class BestPath_v2 {
                 outString.append(" --> ").append(nextVertex);
 
                 //update the values
-                dT = costV[i] ; //update total distance travelled
+                dT = costV[i]; //update total distance travelled
                 tempC -= nextVertex.capacity; //deduct capacity
                 currentVertex = nextVertex;
 
