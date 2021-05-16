@@ -84,7 +84,7 @@ public class GreedySearch {
                                 choose this path.
                         */
                         nextVertex = currentEdge.destination; // path to go
-                        costV[i] = currentEdge.dist ;  //update the path cost value the vertex holds
+                        costV[i] = dT + currentEdge.dist ;  //update the path cost value the vertex holds
 
                     }
                 }
