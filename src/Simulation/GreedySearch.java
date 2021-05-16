@@ -74,18 +74,18 @@ public class GreedySearch {
             for (int i = 0; i < G.size(); i++) {
                 //go through every vertices in the graph
 
-                int tempCap = 0; //holds temp capacity to subtract at dT
+
                 for (int j = 0; j < currentVertex.EdgeList.size(); j++) {
                     //go through every edges connected to current vertex
                     Edge currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge
 
-                    if (tempC >= currentEdge.destination.capacity && dT + currentEdge.dist < costV[i] && !visitedID.contains(currentEdge.destination.ID)) {
+                    if (tempC >= currentEdge.destination.capacity &&  currentEdge.dist < costV[i] && !visitedID.contains(currentEdge.destination.ID)) {
                         /* IF (capacity >= demand) AND (dT + dist < expected_path_dist) AND (the destination hasn't been visited yet):
                                 choose this path.
                         */
                         nextVertex = currentEdge.destination; // path to go
-                        costV[i] = dT + currentEdge.dist ;  //update the path cost value the vertex holds
-                        tempCap = currentEdge.destination.capacity;
+                        costV[i] = currentEdge.dist ;  //update the path cost value the vertex holds
+
                     }
                 }
                 visitedID.add(nextVertex.ID); //the nextVertex has been visited.

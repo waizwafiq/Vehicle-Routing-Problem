@@ -7,7 +7,7 @@ import Simulation.*;
 import map.Graph;
 
 public class Main {
-    private static final String path = "example.txt";
+    private static final String path = "Sample\\Sample2.txt";
     private static int N, C;
     private static Graph map = new Graph();
 
@@ -22,6 +22,7 @@ public class Main {
         BestFirst.run(map, C);
         BestPath.run(map, C);
         BestPath_v2.run(map, C);
+        GreedySearch.run(map, C);
 
     }
 
