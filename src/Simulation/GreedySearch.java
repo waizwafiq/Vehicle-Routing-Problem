@@ -74,15 +74,16 @@ public class GreedySearch {
             for (int i = 0; i < G.size(); i++) {
                 //go through every vertices in the graph
 
-
+                double min = Double.POSITIVE_INFINITY; //hold the value of current minimum distance
                 for (int j = 0; j < currentVertex.EdgeList.size(); j++) {
                     //go through every edges connected to current vertex
                     Edge currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge
 
-                    if (tempC >= currentEdge.destination.capacity &&  currentEdge.dist < costV[i] && !visitedID.contains(currentEdge.destination.ID)) {
+                    if (tempC >= currentEdge.destination.capacity &&  currentEdge.dist < min && !visitedID.contains(currentEdge.destination.ID)) {
                         /* IF (capacity >= demand) AND (dT + dist < expected_path_dist) AND (the destination hasn't been visited yet):
                                 choose this path.
                         */
+                        min = currentEdge.dist; //update the min distance to find the shortest possible path for every vertex
                         nextVertex = currentEdge.destination; // path to go
                         costV[i] = dT + currentEdge.dist ;  //update the path cost value the vertex holds
 
