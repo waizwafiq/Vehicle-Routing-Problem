@@ -5,6 +5,7 @@ import java.util.Scanner;
 import GraphComponent.Vertex;
 import Simulation.*;
 import map.Graph;
+import map.Tree;
 
 public class Main {
     private static final String path = "Sample\\Sample2.txt";
@@ -16,6 +17,8 @@ public class Main {
 
         map.printConnections();
         System.out.println("\n\n\n");
+        Tree.run(map,C); // generate Tree
+
         //Dijkstra.run(map, C); //duplicate to get the best exec. time
         Dijkstra.run(map, C);
         A_star.run(map, C);
