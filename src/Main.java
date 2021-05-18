@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Scanner;
 
 import GraphComponent.Vertex;
@@ -15,11 +16,15 @@ public class Main {
     public static void main(String[] args) {
         readInputFile();
 
+        progressBar("Printing tree... ", 3);
         map.printConnections();
-        System.out.println("\n\n\n");
-        Tree.run(map,C); // generate Tree
+
+        System.out.println("\n");
+        progressBar("Printing tree... ", 3);
+        Tree.run(map, C); // generate Tree
 
         //Dijkstra.run(map, C); //duplicate to get the best exec. time
+        progressBar("Searching using Greedy Algorithms... ", 7);
         Dijkstra.run(map, C);
         A_star.run(map, C);
         BestFirst.run(map, C);
@@ -50,5 +55,31 @@ public class Main {
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
         }
+    }
+
+    private static void updateProgress(String text, double percent) {
+        final int width = 50; // progress bar width in chars
+        System.out.print("\r" + text + " [");
+        int i = 0;
+        for (; i <= (int) (percent / 100 * width); i++)
+            System.out.print("=");
+
+        for (; i < width; i++) {
+            System.out.print(" ");
+        }
+        System.out.print("] "+percent+"%");
+    }
+
+    private static void progressBar(String text, double timeInSec) {
+        //timeInSec isn't accurate
+        double perInterval = timeInSec / 100;
+        try {
+            for (int i = 0; i <= 100; i += 1) {
+                updateProgress(text, i);
+                Thread.sleep((long) (perInterval * (int) Math.pow(10, 3)));
+            }
+        } catch (InterruptedException ignored) {
+        }
+        System.out.println();
     }
 }
