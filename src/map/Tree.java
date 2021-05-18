@@ -8,7 +8,8 @@ public class Tree {
     private static int C;
     private static double tourCost;
     private static List<List<Integer>> tree;
-//permutation
+
+    //permutation
     public static void run(Graph G, int C) {
         /*
     PSEUDOCODE :
@@ -27,27 +28,30 @@ public class Tree {
 
         Tree.G = G;
         Tree.C = C;
-        System.out.println("---Generating tree---\n");
         tree = new ArrayList<>();
 
-
-        int[] vertexID = new int[G.size()-1];
-        for(int i=1;i<G.size();i++){
-            vertexID[i-1] = i;  // All ID in the tree
+        long start = System.nanoTime();
+        int[] vertexID = new int[G.size() - 1];
+        for (int i = 1; i < G.size(); i++) {
+            vertexID[i - 1] = i;  // All ID in the tree
         }
 
         //this will compute the possible combination
-        Integer[][] answer ;
-        for(int i=1;i<=4;i++){
-            answer = nCrArray(vertexID,i);
-            for(int j=0;j<answer.length;j++){
-                tree.addAll(permute(answer[j])); // the generated arrays of combination will undergoes permutation process
+        Integer[][] answer;
+        for (int i = 1; i <= 4; i++) {
+            answer = nCrArray(vertexID, i);
+            for (Integer[] integers : answer) {
+                tree.addAll(permute(integers)); // the generated arrays of combination will undergoes permutation process
             }
         }
         //permutation
         tree = removeDuplicates(tree); //remove any duplicate list, and add 0 to the first and last node
+        long end = System.nanoTime();
+
         System.out.println("\nPossible tree : ");
         tree.forEach(System.out::println);
+        System.out.println("Execution time: " + (double) (end - start) * Math.pow(10, -6) + "ms\n");
+        System.out.println();
     }
 
     public static List<List<Integer>> getTree() {
@@ -60,18 +64,18 @@ public class Tree {
         Permutation(0, nums, result);
         return result;
     }
+
     private static void Permutation(int i, Integer[] nums, List<List<Integer>> result) {
         if (i == nums.length - 1) {
             List<Integer> list = new ArrayList<>();
             int currentCapacity = 0;
-            for (int j=0;j< nums.length;j++){
-                int ID = nums[j]; // will store the ID
-                currentCapacity+= G.getVertex(ID).capacity;
-                if(currentCapacity<=C){
+            // will store the ID
+            for (int ID : nums) {
+                currentCapacity += G.getVertex(ID).capacity;
+                if (currentCapacity <= C) {
                     list.add(ID);
-                }
-                else{
-                    currentCapacity-=G.getVertex(ID).capacity;
+                } else {
+                    currentCapacity -= G.getVertex(ID).capacity;
                 }
 
             }
@@ -89,6 +93,7 @@ public class Tree {
             }
         }
     }
+
     public static List<List<Integer>> removeDuplicates(List<List<Integer>> list) {
 
         // Create a new ArrayList
@@ -96,7 +101,7 @@ public class Tree {
 
         // Traverse through the first list
         for (List<Integer> element : list) {
-            element.add(0,0);
+            element.add(0, 0);
             element.add(0); // add 0 at first and last node, to set it as a route/path
             // If this element is not present in newList
             // then add it
@@ -114,18 +119,20 @@ public class Tree {
     public static int factorial(int num) {
         int fact = 1;
         for (int i = 1; i <= num; i++)
-            fact = fact*i;
+            fact = fact * i;
         return fact;
     }
+
     // Get the nCr
     public static int nCr(int n, int r) {
-        return factorial(n)/(factorial(n-r)*factorial(r));
+        return factorial(n) / (factorial(n - r) * factorial(r));
     }
+
     // Get the combinations of the array
     public static Integer[][] nCrArray(int[] array, int r) {
         int n = array.length;
         // Choose r from the length of the array
-        int ncr = nCr(n,r);
+        int ncr = nCr(n, r);
         Integer[][] result = new Integer[ncr][r];
         int result_index = 0;
         // BASE CASE
@@ -137,13 +144,13 @@ public class Tree {
         // All other cases
         else {
             // Iterate through each of the starting values
-            for (int i = 0; i < array.length-r+1; i++) {
+            for (int i = 0; i < array.length - r + 1; i++) {
                 // Create the sub-array
-                int[] recursivearray = new int[n-i-1];
+                int[] recursivearray = new int[n - i - 1];
                 // Copy into the sub-array all values after the active value
-                System.arraycopy(array, i+1, recursivearray, 0, n-i-1);
+                System.arraycopy(array, i + 1, recursivearray, 0, n - i - 1);
                 // Calculate the sub-combinations (recurse)
-                Integer[][] subarrays = nCrArray(recursivearray, r-1);
+                Integer[][] subarrays = nCrArray(recursivearray, r - 1);
                 // Create the results for this active value
                 for (Integer[] subarray : subarrays) {
                     // Augment the active value and sub-combinations
