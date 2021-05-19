@@ -1,10 +1,9 @@
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Scanner;
 
 import GraphComponent.Vertex;
-import Simulation.*;
+import Simulation.Greedy.*;
 import map.Graph;
 import map.Tree;
 

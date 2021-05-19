@@ -1,9 +1,8 @@
-package Simulation;
+package Simulation.Greedy;
 
 import GraphComponent.Edge;
 import GraphComponent.Vertex;
 import map.Graph;
-import map.Tree;
 
 import java.util.List;
 

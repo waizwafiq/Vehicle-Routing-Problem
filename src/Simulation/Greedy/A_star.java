@@ -1,4 +1,4 @@
-package Simulation;
+package Simulation.Greedy;
 
 import map.Graph;
 import GraphComponent.*;
@@ -6,8 +6,8 @@ import GraphComponent.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//Best-First Traversal Algorithm
-public class BestFirst {
+//A* Traversal Algorithm
+public class A_star {
 
     private static Graph G;
     private static int C;
@@ -15,9 +15,9 @@ public class BestFirst {
 
     public static void run(Graph G, int C) {
         tourCost = 0; //just in case if we want to do multiple A* searches (to reset)
-        BestFirst.G = G;
-        BestFirst.C = C;
-        System.out.println("---Best-First Search---\n");
+        A_star.G = G;
+        A_star.C = C;
+        System.out.println("---A* Search---\n");
         long start = System.nanoTime();
         String result = search();
         long end = System.nanoTime();
@@ -34,8 +34,8 @@ public class BestFirst {
             While all vertices aren't visited:
                 Set dT as 0. (dT is the total distance travelled)
 
-                Let hV: the expected path heuristic function each vertex take
-                Set hV = {+inf, +inf, +inf, ...}
+                Let cV: the expected path cost each vertex take
+                Set cV = {+inf, +inf, +inf, ...}
 
                 Send a vehicle.
                 Start from the depot (ID 0)
@@ -44,34 +44,29 @@ public class BestFirst {
                 Loop through all other vertices:
                     Let currE: current Edge
                     Loop through all edges/path connected from currV:
-                        if the demand is sufficient AND the destination isn't visited AND the heuristic < hV AND the destination is not the depot:
+                        if the demand is sufficient AND the destination isn't visited AND dT + the path's distance + the heuristic< cV:
                             NOTE: heuristic = the destination's demand size
                             choose this path.
-                            update hV with the new expected total heuristic value
-                            keep the chosen path's distance
-
-                    if the capacity is insufficient OR all vertices are visited:
-                        choose the path to the depot.
-                        update hV with the new expect heuristic value
-                        keep the chosen path's distance
+                            update cV with the new expected total cost value
+                            keep the chosen path's demand size to update dTs
 
                     Add the chosen vertex to go into the "visited" list
-                    Update the total distance travelled by the vehicle. (from the saved chosen path's distance)
+                    Update the total distance travelled by the vehicle. (dT = dV - chosen_demand)
                     Deduct the capacity (send the package)
-                    Go to the chosen vertex using the chosen path, if possible.
+                    Go to the chosen vertex using the chosen path.
         */
-        //array of expected edge heuristic selected by each vertex, (initially +inf to get the minimum)
-        double[] heurV = new double[G.size()];
+        //array of expected edge cost selected by each vertex, (initially +inf to get the minimum)
+        double[] costV = new double[G.size()];
         ArrayList<Integer> visitedID = new ArrayList<>(); //a list of visited vertices (based on ID) except depot
         StringBuilder outString = new StringBuilder();
 
         int vehicleCount = 0;
-        while (visitedID.size() != heurV.length - 1) {
+        while (visitedID.size() != costV.length - 1) {
             //while all vertices haven't been visited
             outString.append("Vehicle ").append(++vehicleCount).append("\n"); //EACH LOOP REPRESENTS ONE DELIVERY VEHICLE
 
             double dT = 0; //the total distance travelled
-            Arrays.fill(heurV, Double.POSITIVE_INFINITY);
+            Arrays.fill(costV, Double.POSITIVE_INFINITY);
 
             Vertex currentVertex = G.getHead();
             Vertex nextVertex = G.getHead();
@@ -80,35 +75,26 @@ public class BestFirst {
             outString.append(currentVertex);
             for (int i = 0; i < G.size(); i++) {
                 //go through every vertices in the graph
-                Edge currentEdge = currentVertex.EdgeList.get(0);
-                double tempD = 0; //holds temp distance for dT
+
+                int tempCap = 0; //holds temp capacity to subtract at dT
                 for (int j = 0; j < currentVertex.EdgeList.size(); j++) {
                     //go through every edges connected to current vertex
-                    currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge
+                    Edge currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge
 
-                    if (tempC >= currentEdge.destination.capacity && currentEdge.destination.capacity < heurV[i] && !visitedID.contains(currentEdge.destination.ID) && currentEdge.destination.ID != 0) {
-                        /* IF (capacity >= demand) AND (capacity < expected_path_cost) AND (the destination hasn't been visited yet) AND (the dest is not the depot):
+                    if (tempC >= currentEdge.destination.capacity && dT + currentEdge.dist + currentEdge.destination.capacity < costV[i] && !visitedID.contains(currentEdge.destination.ID)) {
+                        /* IF (capacity >= demand) AND (dT + dist + capacity < expected_path_cost) AND (the destination hasn't been visited yet):
                                 choose this path.
                         */
                         nextVertex = currentEdge.destination; // path to go
-                        heurV[i] = currentEdge.destination.capacity;  //update the path cost value the vertex holds
-                        tempD = dT + currentEdge.dist;
+                        costV[i] = dT + currentEdge.dist + currentEdge.destination.capacity;  //update the path cost value the vertex holds
+                        tempCap = currentEdge.destination.capacity;
                     }
-                }
-                if (tempC < currentEdge.destination.capacity || (visitedID.size() == heurV.length - 1)) {
-                    // if the capacity is insufficient OR all vertices are visited
-                    // this is to avoid infinite loop
-                    // Duplicates happens when the capacity in the vehicle is still sufficient but all vertices are visited.
-                    currentEdge = currentVertex.EdgeList.get(0); //go back to the depot
-                    nextVertex = currentEdge.destination; // path to go
-                    heurV[i] = currentEdge.destination.capacity;  //update the path cost value the vertex holds
-                    tempD = dT + currentEdge.dist;
                 }
                 visitedID.add(nextVertex.ID); //the nextVertex has been visited.
                 outString.append(" --> ").append(nextVertex);
 
                 //update the values
-                dT = tempD; //update total distance travelled
+                dT = costV[i] - tempCap; //update total distance travelled
                 tempC -= nextVertex.capacity; //deduct capacity
                 currentVertex = nextVertex;
 
