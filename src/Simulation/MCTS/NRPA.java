@@ -10,12 +10,12 @@ public class NRPA {
     private static double tourCost;
 
     private static int[][][] policy;
-    private static int level = 3;
 
     public static void run(Graph G, int N, int C) {
         NRPA.G = G;
         NRPA.N = N;
         NRPA.C = C;
+        int level = 3;
         NRPA.policy = new int[level][N][N];
 
         //FILL EACH ROW OF THE FIRST LEVEL WITH 0's
