@@ -3,17 +3,21 @@ package Simulation.Basic;
 import GraphComponent.Edge;
 import GraphComponent.Vertex;
 import map.Graph;
+import map.Path;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DepthFirst {
     //the id is array
     private static Graph G;
     private static int C;
     private static List<String> tree;
+    private static HashMap<String, Path> pathMap;
+    private static  List<Path> pathList;
 
     public static void run(Graph G, int C) {
+        pathMap = new HashMap<>();
+        pathList = new ArrayList<>();
         double tourCost = 0;
         DepthFirst.G = G;
         DepthFirst.C = C;
@@ -27,9 +31,10 @@ public class DepthFirst {
         tree = new ArrayList<>();
         generateTree(0, 0, "");
         search();
-        for (Object element : tree) {
-            System.out.println(element);
+        for (Object element : pathList) {
+            System.out.println("test "+element);
         }
+       // System.out.println(pathMap);
 
     }
 
@@ -63,7 +68,7 @@ public class DepthFirst {
 
             //Generate array of nodes
             String[] strArray = element.split(" ");
-            int[] nodes = new int[strArray.length];
+            Integer[] nodes = new Integer[strArray.length];
             for(int i=0;i< strArray.length;i++){
                 nodes[i] = Integer.parseInt(strArray[i]);
                 capacity+=G.getVertex(nodes[i]).capacity;
@@ -74,7 +79,24 @@ public class DepthFirst {
             for(int i=0;i< nodes.length-1;i++){
                 distance+= computeDistance(G.getVertex(nodes[i]),G.getVertex(nodes[i+1]));
             }
-            System.out.println(distance+" c| "+capacity);
+            //System.out.println(distance+" c| "+capacity);
+
+            Integer[] nodesSort = nodes.clone();
+            Arrays.sort(nodesSort);
+
+            Path newPath = new Path(nodes,distance,capacity);
+            Path path = pathMap.putIfAbsent(Arrays.toString(nodesSort),newPath);
+
+            if(path!=null){
+                if(path.getDistance()>distance){
+                    pathMap.replace(Arrays.toString(nodesSort),path,newPath);
+                }
+            }
+
+
+        }
+        for(Map.Entry<String, Path> entry : pathMap.entrySet()){
+            pathList.add(entry.getValue());
         }
     }
 
