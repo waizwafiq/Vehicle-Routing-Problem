@@ -6,7 +6,7 @@ import GraphComponent.Vertex;
 import Simulation.Basic.*;
 import Simulation.Greedy.*;
 import map.Graph;
-import map.Tree;
+
 
 public class Main {
     private static final String path = "Sample\\Sample2.txt";
@@ -15,12 +15,14 @@ public class Main {
 
     public static void main(String[] args) {
         readInputFile();
-        BlindDFS.run(map, N, C);
-        Dijkstra.run(map, C);
-        A_star.run(map, C);
-        BestFirst.run(map, C);
-        BestPath.run(map, C);
-        BestPath_v2.run(map, C);
+        map.printConnections();
+        DepthFirst.run(map,C);
+//        BlindDFS.run(map, N, C);
+//        Dijkstra.run(map, C);
+//        A_star.run(map, C);
+//        BestFirst.run(map, C);
+//        BestPath.run(map, C);
+//        BestPath_v2.run(map, C);
         // GreedySearch.run(map, C);
 
         /*
