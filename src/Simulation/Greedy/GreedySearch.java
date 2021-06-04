@@ -80,7 +80,7 @@ public class GreedySearch {
                     Edge currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge
 
                     if (tempC >= currentEdge.destination.capacity &&  currentEdge.dist < min && !visitedID.contains(currentEdge.destination.ID)) {
-                        /* IF (capacity >= demand) AND (dT + dist < expected_path_dist) AND (the destination hasn't been visited yet):
+                        /* IF (capacity >= demand) AND (dist < expected_path_dist) AND (the destination hasn't been visited yet):
                                 choose this path.
                         */
                         min = currentEdge.dist; //update the min distance to find the shortest possible path for every vertex
