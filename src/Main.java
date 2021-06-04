@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 
 import GraphComponent.Vertex;
+import Simulation.Basic.*;
 import Simulation.Greedy.*;
 import map.Graph;
 import map.Tree;
@@ -10,11 +11,19 @@ import map.Tree;
 public class Main {
     private static final String path = "Sample\\Sample2.txt";
     private static int N, C;
-    private static Graph map = new Graph();
+    private static final Graph map = new Graph();
 
     public static void main(String[] args) {
         readInputFile();
+        BlindDFS.run(map, N, C);
+        Dijkstra.run(map, C);
+        A_star.run(map, C);
+        BestFirst.run(map, C);
+        BestPath.run(map, C);
+        BestPath_v2.run(map, C);
+        // GreedySearch.run(map, C);
 
+        /*
         progressBar("Printing tree... ", 3);
         map.printConnections();
 
@@ -31,7 +40,7 @@ public class Main {
         BestPath_v2.run(map, C);
         GreedySearch.run(map, C);
         //DepthFirst.run(map, C);
-
+        */
     }
 
     public static void readInputFile() {
@@ -66,7 +75,7 @@ public class Main {
         for (; i < width; i++) {
             System.out.print(" ");
         }
-        System.out.print("] "+percent+"%");
+        System.out.print("] " + percent + "%");
     }
 
     private static void progressBar(String text, double timeInSec) {
