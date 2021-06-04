@@ -10,6 +10,7 @@ public class NRPA {
     private static double tourCost;
 
     private static int[][][] policy;
+    private static int[][] globalPolicy;
 
     public static void run(Graph G, int N, int C) {
         NRPA.G = G;
@@ -29,11 +30,20 @@ public class NRPA {
         if (level == 0)
             return rollout();
 
-        int[][] globalPolicy = policy[level];
+        policy[level] = NRPA.globalPolicy;
 
         for (int i = 0; i < iterations; i++){
+            /*
+            new_tour = search(level-1, iterations)
+            if new_tour's cost < best_tour's cost:
+                best_tour = new_tour
+                adapt(best_tour, level)
 
+            if processing_time exceed time limit:
+                return best_tour
+             */
         }
+        globalPolicy = policy[level];
         return 0;
     }
 
