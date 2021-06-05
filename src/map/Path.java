@@ -32,7 +32,13 @@ public class Path implements Comparable<Path> {
 
     @Override
     public String toString() {
-        return "ID"+ID+" "+Arrays.toString(nodes) + " |d = "+distance+" |c = "+capacity+"\n";
+        String str = "";
+        for(int i=0;i<nodes.length;i++){
+            str+="{ID "+nodes[i]+"}";
+            if(i!=nodes.length-1) str+= " --> ";
+        }
+
+        return str+"\nCapacity : "+capacity+"\nCost : "+distance;
     }
 
     public Integer[] getNodes() {

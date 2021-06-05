@@ -15,6 +15,7 @@ public class DepthFirst {
     private static HashMap<String, Path> pathMap;
     private static List<Path> pathList;
     private static List<String> route;
+    private static double tourDistance = Double.MAX_VALUE;
 
 
     public static void run(Graph G, int C) {
@@ -22,39 +23,39 @@ public class DepthFirst {
         pathMap = new HashMap<>();
         pathList = new ArrayList<>();
         route = new ArrayList<>();
-        double tourCost = 0;
+        tree = new ArrayList<>();
         DepthFirst.G = G;
         DepthFirst.C = C;
         System.out.println("---DF Search---\n");
         long start = System.nanoTime();
-//        String result = search(G.getHead());
-
-        System.out.println("Tour Cost: " + tourCost);
         //System.out.println(result);
-
-        tree = new ArrayList<>();
         generateTree(0, 0, "");
         search();
-        //Collections.sort(pathList);
-        for (Object element : pathList) {
-            System.out.println(element);
-        }
-        printAllEdge();
 
+
+        //finding the best tour, the last in list of "route" is considered the lowest
         for(int i=0;i< pathList.size();i++){
-            bestTour(i,"","");
+            bestTour(i,"","",0.0);
         }
 
-        for (Object element : route) {
-            System.out.println(element);
+        //printing the best tour
+        String[] bestTour = route.get(route.size()-1).split(" ");
+        System.out.println("Tour cost : "+tourDistance);
+        for(int i=0;i< bestTour.length;i++){
+            System.out.println("Vehicle "+(i+1));
+            System.out.println(pathList.get(Integer.parseInt(bestTour[i])));
         }
 
-        System.out.println(pathList.size());
-        // System.out.println(pathMap);
+
+
+
+
+
+
         long end = System.nanoTime();
         System.out.println("Execution time: " + (double) (end - start) * Math.pow(10, -6) + "ms\n");
     }
-
+    //generate tree (limiting the capacity)
     private static void generateTree(int capacity, int vertexID, String currentList) {
         Vertex currentVertex = G.getVertex(vertexID);
         capacity += currentVertex.capacity;
@@ -77,6 +78,7 @@ public class DepthFirst {
 
     }
 
+    //search for the tree
     private static void search() {
         //putting the
         for (String element : tree) {
@@ -128,12 +130,14 @@ public class DepthFirst {
 
     }
 
+    //calculate distance between two vertex
     private static double computeDistance(Vertex v1, Vertex v2) {
         double dx = v1.coordinateX - v2.coordinateX;
         double dy = v1.coordinateY - v2.coordinateY;
 
         return Math.sqrt((dx * dx) + (dy * dy));
     }
+
 
     private static boolean arrayPathChecker(Path from, Path dest) {
         Integer[] a = from.getNodes();
@@ -150,6 +154,7 @@ public class DepthFirst {
         return true;
     }
 
+    //creating the graph ( edges for every path )
     private static void pathGraph(Path currentPath) {
         List<Path> edges = currentPath.getPathList();
 
@@ -160,19 +165,24 @@ public class DepthFirst {
         }
     }
 
-    private static void bestTour(int pathID, String visitedPath,String visitedNodes) {
+    //finding the bset tour
+    private static void bestTour(int pathID, String visitedPath,String visitedNodes,double distance) {
         Path currentPath = pathList.get(pathID);
         visitedPath+= pathID+" ";
         visitedNodes+= Arrays.toString(currentPath.getNodes());
+        distance+= currentPath.getDistance();
         for(int i=0;i< currentPath.getPathList().size();i++){
             Path nextPath = currentPath.getPathList().get(i);
 
             if(!haveIntegerInString(nextPath.getNodes(), visitedNodes)){
-                bestTour(nextPath.getID(), visitedPath,visitedNodes);
+                bestTour(nextPath.getID(), visitedPath,visitedNodes,distance);
             }
         }
         if(StringContainAllNodes(visitedNodes)) {
-            route.add(visitedPath);
+            if(distance<tourDistance) {
+                tourDistance = distance;
+                route.add(visitedPath);
+            }
         }
 
 
@@ -200,7 +210,6 @@ public class DepthFirst {
         }
         return true;
     }
-
     private static void printAllEdge(){
         for(int i=0;i<pathList.size();i++){
             Path current = pathList.get(i);
