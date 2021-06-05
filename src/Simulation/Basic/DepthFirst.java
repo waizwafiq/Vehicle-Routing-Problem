@@ -24,18 +24,21 @@ public class DepthFirst {
         System.out.println("---DF Search---\n");
         long start = System.nanoTime();
 //        String result = search(G.getHead());
-        long end = System.nanoTime();
+
         System.out.println("Tour Cost: " + tourCost);
         //System.out.println(result);
-        System.out.println("Execution time: " + (double) (end - start) * Math.pow(10, -6) + "ms\n");
+
         tree = new ArrayList<>();
         generateTree(0, 0, "");
         search();
+        Collections.sort(pathList);
         for (Object element : pathList) {
-            System.out.println("test "+element);
+            System.out.println(element);
         }
+        System.out.println(pathList.size());
        // System.out.println(pathMap);
-
+        long end = System.nanoTime();
+        System.out.println("Execution time: " + (double) (end - start) * Math.pow(10, -6) + "ms\n");
     }
 
     private static void generateTree(int capacity, int vertexID, String currentList) {
@@ -61,6 +64,7 @@ public class DepthFirst {
     }
 
     private static void search(){
+        //putting the
         for(String element : tree){
 
             double distance = 0;
@@ -105,5 +109,13 @@ public class DepthFirst {
         double dy = v1.coordinateY - v2.coordinateY;
 
         return Math.sqrt((dx * dx) + (dy * dy));
+    }
+
+    private static void pathGraph(Path currentPath){
+        List<Path> edges = currentPath.getPathList();
+
+        for(int i=0;i<pathList.size();i++){
+
+        }
     }
 }
