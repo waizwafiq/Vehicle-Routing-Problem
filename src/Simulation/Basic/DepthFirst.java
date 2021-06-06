@@ -16,6 +16,8 @@ public class DepthFirst {
     private static List<Path> pathList;
     private static List<String> route;
     private static double tourDistance = Double.MAX_VALUE;
+    private static long  start,end,time;
+    private static final long maxTime = 60;
 
 
     public static void run(Graph G, int C) {
@@ -27,18 +29,25 @@ public class DepthFirst {
         DepthFirst.G = G;
         DepthFirst.C = C;
         System.out.println("---DF Search---\n");
-        long start = System.nanoTime();
+        start = System.currentTimeMillis();
         //System.out.println(result);
         generateTree(0, 0, "");
         search();
 
 
         //finding the best tour, the last in list of "route" is considered the lowest
-        for(int i=0;i< pathList.size();i++){
-            bestTour(i,"","",0.0);
-        }
+        end = System.currentTimeMillis();
+        for(int i=0;i< pathList.size() && time < maxTime ;i++){
+            System.out.println("Current time in for loop : "+((end - start)/1000));
 
+            bestTour(i,"","",0.0);
+
+        }
+        //printAllEdge();
         //printing the best tour
+        for( String element : route){
+            System.out.println(element);
+        }
         String[] bestTour = route.get(route.size()-1).split(" ");
         System.out.println("Tour cost : "+tourDistance);
         for(int i=0;i< bestTour.length;i++){
@@ -52,7 +61,7 @@ public class DepthFirst {
 
 
 
-        long end = System.nanoTime();
+
         System.out.println("Execution time: " + (double) (end - start) * Math.pow(10, -6) + "ms\n");
     }
     //generate tree (limiting the capacity)
@@ -167,25 +176,29 @@ public class DepthFirst {
 
     //finding the bset tour
     private static void bestTour(int pathID, String visitedPath,String visitedNodes,double distance) {
-        Path currentPath = pathList.get(pathID);
-        visitedPath+= pathID+" ";
-        visitedNodes+= Arrays.toString(currentPath.getNodes());
-        distance+= currentPath.getDistance();
-        for(int i=0;i< currentPath.getPathList().size();i++){
-            Path nextPath = currentPath.getPathList().get(i);
+        end = System.currentTimeMillis();
+        time = ((end - start)/1000);
+        System.out.println("Current time : "+time);
+        if(time < maxTime) {
+            Path currentPath = pathList.get(pathID);
+            visitedPath += pathID + " ";
+            visitedNodes += Arrays.toString(currentPath.getNodes());
+            distance += currentPath.getDistance();
+            for (int i = 0; i < currentPath.getPathList().size(); i++) {
+                Path nextPath = currentPath.getPathList().get(i);
 
-            if(!haveIntegerInString(nextPath.getNodes(), visitedNodes)){
-                bestTour(nextPath.getID(), visitedPath,visitedNodes,distance);
+                if (!haveIntegerInString(nextPath.getNodes(), visitedNodes)) {
+                    bestTour(nextPath.getID(), visitedPath, visitedNodes, distance);
+                }
             }
-        }
-        if(StringContainAllNodes(visitedNodes)) {
-            if(distance<tourDistance) {
-                tourDistance = distance;
-                route.add(visitedPath);
+            if (StringContainAllNodes(visitedNodes)) {
+                if (distance < tourDistance) {
+                    tourDistance = distance;
+                    route.add(visitedPath);
+                }
             }
+
         }
-
-
     }
 
     private static boolean haveIntegerInString(Integer[] nodes, String visited) {
@@ -220,5 +233,7 @@ public class DepthFirst {
             }
             System.out.println();
         }
+
+        System.out.println("----------------");
     }
 }

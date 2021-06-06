@@ -9,7 +9,7 @@ import map.Graph;
 
 
 public class Main {
-    private static final String path = "Sample\\Sample2.txt";
+    private static final String path = "Sample\\Sample3.txt";
     private static int N, C;
     private static final Graph map = new Graph();
 
