@@ -70,7 +70,7 @@ public class Main {
                 String[] line_i = inText.nextLine().split(" ");
                 Vertex temp = new Vertex(Double.parseDouble(line_i[0]), Double.parseDouble(line_i[1]), Integer.parseInt(line_i[2]), i);
                 /* IF SITE-DEPENDENT **CUSTOMERS** IS ON:
-                The narrow site will be in the area of a circle with the radius of r and centered at (x_c, y_c)
+                The narrow site will be inside the area of a circle with the radius of r and centered at (x_c, y_c)
                 If the customer is in the narrow site, then set the narrowArea boolean of the vertex to true.
                  */
                 double dx = temp.coordinateX - x_c, dy = temp.coordinateY - y_c;
