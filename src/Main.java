@@ -2,16 +2,15 @@ import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 import java.util.Scanner;
 
-import GraphComponent.Vertex;
+import mapComponent.Vertex;
 import Simulation.Basic.*;
-import Simulation.Greedy.*;
-import map.Graph;
+import map.Map;
 
 
 public class Main {
     private static final String path = "Sample\\Sample3.txt";
     private static int N, C;
-    private static final Graph map = new Graph();
+    private static final Map map = new Map();
 
     public static void main(String[] args) {
         readInputFile();
