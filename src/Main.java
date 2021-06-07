@@ -2,27 +2,32 @@ import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 import java.util.Scanner;
 
+import Simulation.Greedy.*;
 import mapComponent.Vertex;
 import Simulation.Basic.*;
 import map.Map;
 
 
 public class Main {
-    private static final String path = "Sample\\Sample3.txt";
+    private static final String path = "Sample\\Sample1.txt";
     private static int N, C;
     private static final Map map = new Map();
 
     public static void main(String[] args) {
-        readInputFile();
+        readInputFile(false);
         map.printConnections();
-        DepthFirst.run(map,C);
-//        BlindDFS.run(map, N, C);
-//        Dijkstra.run(map, C);
-//        A_star.run(map, C);
-//        BestFirst.run(map, C);
-//        BestPath.run(map, C);
-//        BestPath_v2.run(map, C);
-        // GreedySearch.run(map, C);
+        int lorries = 3;
+
+//        //DepthFirst.run(map,C);
+//        System.out.println("\nC = " + C);
+        Dijkstra.run(map, C, lorries);
+//        BlindDFS.run(map, N, C, lorries);
+//        Dijkstra.run(map, C, lorries);
+//        A_star.run(map, C, lorries);
+//        BestFirst.run(map, C, lorries);
+//        BestPath.run(map, C, lorries);
+//        BestPath_v2.run(map, C, lorries);
+//        GreedySearch.run(map, C, lorries);
 
         /*
         progressBar("Printing tree... ", 3);
@@ -44,7 +49,15 @@ public class Main {
         */
     }
 
-    public static void readInputFile() {
+    public static void readInputFile(boolean site_dependent) {
+        readInputFile(0, 0, 4, site_dependent);
+    }
+
+    public static void readInputFile(double x_c, double y_c, double radius) {
+        readInputFile(x_c, y_c, radius, true);
+    }
+
+    private static void readInputFile(double x_c, double y_c, double r, boolean site_dependent) {
 
         try {
             Scanner inText = new Scanner(new FileInputStream(path));
@@ -56,6 +69,14 @@ public class Main {
             for (int i = 0; i < N; i++) {
                 String[] line_i = inText.nextLine().split(" ");
                 Vertex temp = new Vertex(Double.parseDouble(line_i[0]), Double.parseDouble(line_i[1]), Integer.parseInt(line_i[2]), i);
+                /* IF SITE-DEPENDENT **CUSTOMERS** IS ON:
+                The narrow site will be in the area of a circle with the radius of r and centered at (x_c, y_c)
+                If the customer is in the narrow site, then set the narrowArea boolean of the vertex to true.
+                 */
+                double dx = temp.coordinateX - x_c, dy = temp.coordinateY - y_c;
+                temp.narrowArea = i != 0 && site_dependent && ((dx * dx) + (dy + dy) <= (r * r));
+
+
                 map.addVertex(temp);
             }
 
