@@ -1,7 +1,7 @@
 package Simulation.Greedy;
 
-import map.Graph;
-import GraphComponent.*;
+import map.Map;
+import mapComponent.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,11 +9,11 @@ import java.util.Arrays;
 //A* Traversal Algorithm
 public class A_star {
 
-    private static Graph G;
+    private static Map G;
     private static int C;
     private static double tourCost;
 
-    public static void run(Graph G, int C) {
+    public static void run(Map G, int C) {
         tourCost = 0; //just in case if we want to do multiple A* searches (to reset)
         A_star.G = G;
         A_star.C = C;
