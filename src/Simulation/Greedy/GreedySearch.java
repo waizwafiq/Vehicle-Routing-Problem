@@ -1,18 +1,18 @@
 package Simulation.Greedy;
 
-import GraphComponent.Edge;
-import GraphComponent.Vertex;
-import map.Graph;
+import mapComponent.Edge;
+import mapComponent.Vertex;
+import map.Map;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GreedySearch {
-    private static Graph G;
+    private static Map G;
     private static int C;
     private static double tourCost = 0;
 
-    public static void run(Graph G, int C) {
+    public static void run(Map G, int C) {
         GreedySearch.G = G;
         GreedySearch.C = C;
         System.out.println("---Greedy Search---\n");
