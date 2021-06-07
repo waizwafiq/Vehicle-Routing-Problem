@@ -1,13 +1,13 @@
 package map;
 
-import GraphComponent.*;
+import mapComponent.*;
 
 import java.util.ArrayList;
 
-public class Graph {
+public class Map {
     public ArrayList<Vertex> vertexArrayList; //holds vertices arraylist
 
-    public Graph() {
+    public Map() {
         vertexArrayList = new ArrayList<>();
     }
 
@@ -19,12 +19,23 @@ public class Graph {
         vertexArrayList.add(vertex);
     }
 
+    public void addEdge(int ID_source, int ID_dest) {
+        double dist = computeDistance(getVertex(ID_source), getVertex(ID_dest)); //calculate the distance(weight)
+        Edge newEdge = new Edge(getVertex(ID_dest), dist); // create the new edge
+        getVertex(ID_source).EdgeList.add(newEdge);
+    }
+
+    public boolean hasEdge(int ID_source, int ID_dest) {
+        double weight = computeDistance(getVertex(ID_source), getVertex(ID_dest));
+        return getVertex(ID_source).EdgeList.contains(new Edge(getVertex(ID_dest), weight));
+    }
+
     public Vertex getHead() {
         return vertexArrayList.get(0);
     }
 
     public Vertex getVertex(int idx) {
-        if(idx < 0 || idx >= size())
+        if (idx < 0 || idx >= size())
             return null;
 
         return vertexArrayList.get(idx);
@@ -34,15 +45,15 @@ public class Graph {
         return vertexArrayList.get(vertexArrayList.size() - 1);
     }
 
-    public void unvisitAll(){
-        for(Vertex V: vertexArrayList){
+    public void unvisitAll() {
+        for (Vertex V : vertexArrayList)
             V.unvisit();
-        }
+
     }
 
     public boolean isAllVisited() {
         boolean out = false;
-        for(Vertex V: vertexArrayList)
+        for (Vertex V : vertexArrayList)
             out = V.isVisited();
 
         return out;
