@@ -55,15 +55,9 @@ public class DepthFirst {
             System.out.println(pathList.get(Integer.parseInt(bestTour[i])));
         }
 
-
-
-
-
-
-
-
         System.out.println("Execution time: " + (double) (end - start) * Math.pow(10, -6) + "ms\n");
     }
+
     //generate tree (limiting the capacity)
     private static void generateTree(int capacity, int vertexID, String currentList) {
         Vertex currentVertex = G.getVertex(vertexID);
