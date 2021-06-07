@@ -1,4 +1,4 @@
-package GraphComponent;
+package mapComponent;
 
 import java.util.ArrayList;
 
