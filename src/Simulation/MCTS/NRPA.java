@@ -1,12 +1,12 @@
 package Simulation.MCTS;
 
-import map.Graph;
+import map.Map;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class NRPA {
-    private static Graph G;
+    private static Map G;
     private static int N, C;
     private static double tourCost;
 
@@ -15,7 +15,7 @@ public class NRPA {
     private static int[][][] policy;
     private static int[][] globalPolicy;
 
-    public static void run(Graph G, int N, int C) {
+    public static void run(Map G, int N, int C) {
         NRPA.G = G;
         NRPA.N = N;
         NRPA.C = C;
