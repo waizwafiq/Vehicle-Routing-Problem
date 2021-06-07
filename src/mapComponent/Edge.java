@@ -1,4 +1,4 @@
-package GraphComponent;
+package mapComponent;
 
 public class Edge implements Comparable<Edge> {
     public Vertex destination; //holds destination vertex (toVertex)
