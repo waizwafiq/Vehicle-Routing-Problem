@@ -1,15 +1,15 @@
 package Simulation.Basic;
 
-import GraphComponent.Edge;
-import GraphComponent.Vertex;
-import map.Graph;
+import mapComponent.Edge;
+import mapComponent.Vertex;
+import map.Map;
 import map.Path;
 
 import java.util.*;
 
 public class DepthFirst {
     //the id is array
-    private static Graph G;
+    private static Map G;
     private static int C;
     private static List<String> tree;
     private static HashMap<String, Path> pathMap;
@@ -20,7 +20,7 @@ public class DepthFirst {
     private static final long maxTime = 60;
 
 
-    public static void run(Graph G, int C) {
+    public static void run(Map G, int C) {
         //initiazlize everything
         pathMap = new HashMap<>();
         pathList = new ArrayList<>();
@@ -126,7 +126,7 @@ public class DepthFirst {
         }
         //insert everything into list of path with ID
         int currentID = 0;
-        for (Map.Entry<String, Path> entry : pathMap.entrySet()) {
+        for (java.util.Map.Entry<String, Path> entry : pathMap.entrySet()) {
             Path currentPath = entry.getValue();
             currentPath.setID(currentID);
             pathList.add(currentPath);
