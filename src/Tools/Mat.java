@@ -32,6 +32,12 @@ public class Mat {
         return sum_x2(array) / N - (mean * mean);
     }
 
+    public static double sum(double[] array) {
+        double sum = 0;
+        for (double v : array) sum += v;
+        return sum;
+    }
+
     public static double sum_x2(double[] array) {
         double sum = 0;
 
