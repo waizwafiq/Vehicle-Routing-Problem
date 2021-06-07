@@ -10,10 +10,11 @@ import java.util.Arrays;
 public class BestFirst {
 
     private static Map G;
-    private static int C;
+    private static int C, lorries;
     private static double tourCost;
 
-    public static void run(Map G, int C) {
+    public static void run(Map G, int C, int numberOfLorries) {
+        BestFirst.lorries = numberOfLorries;
         tourCost = 0; //just in case if we want to do multiple A* searches (to reset)
         BestFirst.G = G;
         BestFirst.C = C;
@@ -65,19 +66,27 @@ public class BestFirst {
         ArrayList<Integer> visitedID = new ArrayList<>(); //a list of visited vertices (based on ID) except depot
         StringBuilder outString = new StringBuilder();
 
-        int vehicleCount = 0;
+        int vehicleCount = 0, lorryCount = 0;
         while (visitedID.size() != heurV.length - 1) {
             //while all vertices haven't been visited
-            outString.append("Vehicle ").append(++vehicleCount).append("\n"); //EACH LOOP REPRESENTS ONE DELIVERY VEHICLE
-
+            int tempC = 0;
+            if (lorries != 0) {
+                //if there are still lorries to be dispatched out:
+                tempC = 2 * C; //to deduct the capacity in lorry whenever a vertex is visited
+                outString.append("Vehicle ").append(++vehicleCount).append(" (Lorry ").append(++lorryCount).append(")\n");
+                lorries--;
+            } else {
+                tempC = C;
+                outString.append("Vehicle ").append(++vehicleCount).append("\n");
+            }
             double dT = 0; //the total distance travelled
             Arrays.fill(heurV, Double.POSITIVE_INFINITY);
 
             Vertex currentVertex = G.getHead();
             Vertex nextVertex = G.getHead();
-            int tempC = C; //to deduct the capacity in vehicle whenever a vertex is visited
 
             outString.append(currentVertex);
+            int totalCap = 0;
             for (int i = 0; i < G.size(); i++) {
                 //go through every vertices in the graph
                 Edge currentEdge = currentVertex.EdgeList.get(0);
@@ -110,6 +119,7 @@ public class BestFirst {
                 //update the values
                 dT = tempD; //update total distance travelled
                 tempC -= nextVertex.capacity; //deduct capacity
+                totalCap += nextVertex.capacity;
                 currentVertex = nextVertex;
 
                 if (currentVertex.ID == 0)
@@ -117,7 +127,7 @@ public class BestFirst {
                     break;
             }
             visitedID.remove((Integer) 0); //used Integer to make it as an object
-            outString.append("\nCapacity: ").append(C - tempC);
+            outString.append("\nCapacity: ").append(totalCap);
             outString.append("\nCost: ").append(dT).append("\n");
             tourCost += dT;
         }

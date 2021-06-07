@@ -66,7 +66,8 @@ public class Dijkstra {
 
             int tempC;
             if (lorries != 0) {
-                tempC = 2 * C; //to deduct the capacity in vehicle whenever a vertex is visited
+                //if there are still lorries to be dispatched out:
+                tempC = 2 * C; //to deduct the capacity in lorry whenever a vertex is visited
                 outString.append("Vehicle ").append(++vehicleCount).append(" (Lorry ").append(++lorryCount).append(")\n");
                 lorries--;
             } else {

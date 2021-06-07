@@ -10,10 +10,11 @@ import java.util.Arrays;
 public class A_star {
 
     private static Map G;
-    private static int C;
+    private static int C, lorries;
     private static double tourCost;
 
-    public static void run(Map G, int C) {
+    public static void run(Map G, int C, int numberOfLorries) {
+        A_star.lorries = numberOfLorries;
         tourCost = 0; //just in case if we want to do multiple A* searches (to reset)
         A_star.G = G;
         A_star.C = C;
@@ -60,19 +61,29 @@ public class A_star {
         ArrayList<Integer> visitedID = new ArrayList<>(); //a list of visited vertices (based on ID) except depot
         StringBuilder outString = new StringBuilder();
 
-        int vehicleCount = 0;
+        int vehicleCount = 0, lorryCount = 0;
         while (visitedID.size() != costV.length - 1) {
             //while all vertices haven't been visited
-            outString.append("Vehicle ").append(++vehicleCount).append("\n"); //EACH LOOP REPRESENTS ONE DELIVERY VEHICLE
+
+            int tempC;
+            if (lorries != 0) {
+                //if there are still lorries to be dispatched out:
+                tempC = 2 * C; //to deduct the capacity in lorry whenever a vertex is visited
+                outString.append("Vehicle ").append(++vehicleCount).append(" (Lorry ").append(++lorryCount).append(")\n");
+                lorries--;
+            } else {
+                tempC = C;
+                outString.append("Vehicle ").append(++vehicleCount).append("\n");
+            }
 
             double dT = 0; //the total distance travelled
             Arrays.fill(costV, Double.POSITIVE_INFINITY);
 
             Vertex currentVertex = G.getHead();
             Vertex nextVertex = G.getHead();
-            int tempC = C; //to deduct the capacity in vehicle whenever a vertex is visited
 
             outString.append(currentVertex);
+            int totalCap = 0;
             for (int i = 0; i < G.size(); i++) {
                 //go through every vertices in the graph
 
@@ -96,6 +107,7 @@ public class A_star {
                 //update the values
                 dT = costV[i] - tempCap; //update total distance travelled
                 tempC -= nextVertex.capacity; //deduct capacity
+                totalCap += nextVertex.capacity;
                 currentVertex = nextVertex;
 
                 if (currentVertex.ID == 0)
@@ -103,7 +115,7 @@ public class A_star {
                     break;
             }
             visitedID.remove((Integer) 0); //used Integer to make it as an object
-            outString.append("\nCapacity: ").append(C - tempC);
+            outString.append("\nCapacity: ").append(totalCap);
             outString.append("\nCost: ").append(dT).append("\n");
             tourCost += dT;
         }
