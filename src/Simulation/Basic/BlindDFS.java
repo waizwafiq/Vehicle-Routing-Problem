@@ -1,19 +1,18 @@
 package Simulation.Basic;
 
-import GraphComponent.Edge;
-import GraphComponent.Vertex;
-import map.Graph;
+import mapComponent.Edge;
+import mapComponent.Vertex;
+import map.Map;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BlindDFS {
 
-    private static Graph G;
+    private static Map G;
     private static int N, C;
     private static double tourCost;
 
-    public static void run(Graph G, int N, int C) {
+    public static void run(Map G, int N, int C) {
         BlindDFS.G = G;
         BlindDFS.N = N;
         BlindDFS.C = C;
