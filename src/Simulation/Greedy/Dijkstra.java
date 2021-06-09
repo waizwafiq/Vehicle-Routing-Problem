@@ -114,14 +114,14 @@ public class Dijkstra {
                 visitedID.add(nextVertex.ID); //the nextVertex has been visited.
                 outString.append(" --> ").append(nextVertex);
 
-                if (nextVertex.ID == 0)
-                    break;
-
                 //update the values
                 dT = distV[i]; //update total distance travelled
                 tempC -= nextVertex.capacity; //deduct capacity
                 totalCapacity += nextVertex.capacity;
                 currentVertex = nextVertex;
+
+                if (nextVertex.ID == 0)
+                    break;
             }
             visitedID.remove((Integer) 0); //used Integer to make it as an object
             outString.append("\nCapacity: ").append(totalCapacity);
