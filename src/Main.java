@@ -14,16 +14,15 @@ public class Main {
     private static final Map map = new Map();
 
     public static void main(String[] args) {
-        readInputFile(false);
+        readInputFile(3, 3, 5);
         map.printConnections();
-        int lorries = 3;
+        int lorries = 0;
+        System.out.println("\nC = " + C);
 
-//        //DepthFirst.run(map,C);
-//        System.out.println("\nC = " + C);
-        Dijkstra.run(map, C, lorries);
+        DepthFirst.run(map,C);
 //        BlindDFS.run(map, N, C, lorries);
-//        Dijkstra.run(map, C, lorries);
-//        A_star.run(map, C, lorries);
+        //Dijkstra.run(map, C, lorries);
+        //A_star.run(map, C, lorries);
 //        BestFirst.run(map, C, lorries);
 //        BestPath.run(map, C, lorries);
 //        BestPath_v2.run(map, C, lorries);
@@ -44,7 +43,6 @@ public class Main {
         BestFirst.run(map, C);
         BestPath.run(map, C);
         BestPath_v2.run(map, C);
-        GreedySearch.run(map, C);
         //DepthFirst.run(map, C);
         */
     }
@@ -75,7 +73,6 @@ public class Main {
                  */
                 double dx = temp.coordinateX - x_c, dy = temp.coordinateY - y_c;
                 temp.narrowArea = i != 0 && site_dependent && ((dx * dx) + (dy + dy) <= (r * r));
-
 
                 map.addVertex(temp);
             }
