@@ -69,7 +69,7 @@ public class BestFirst {
         int vehicleCount = 0, lorryCount = 0;
         while (visitedID.size() != heurV.length - 1) {
             //while all vertices haven't been visited
-            int tempC = 0;
+            int tempC;
             boolean lorryUsed = false;
             outString.append("---------------------\n");
             if (lorries != 0) {
