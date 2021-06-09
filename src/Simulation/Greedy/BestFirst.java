@@ -70,11 +70,14 @@ public class BestFirst {
         while (visitedID.size() != heurV.length - 1) {
             //while all vertices haven't been visited
             int tempC = 0;
+            boolean lorryUsed = false;
+            outString.append("---------------------\n");
             if (lorries != 0) {
                 //if there are still lorries to be dispatched out:
                 tempC = 2 * C; //to deduct the capacity in lorry whenever a vertex is visited
                 outString.append("Vehicle ").append(++vehicleCount).append(" (Lorry ").append(++lorryCount).append(")\n");
                 lorries--;
+                lorryUsed = true;
             } else {
                 tempC = C;
                 outString.append("Vehicle ").append(++vehicleCount).append("\n");
@@ -87,6 +90,7 @@ public class BestFirst {
 
             outString.append(currentVertex);
             int totalCap = 0;
+            boolean dispatched = false;
             for (int i = 0; i < G.size(); i++) {
                 //go through every vertices in the graph
                 Edge currentEdge = currentVertex.EdgeList.get(0);
@@ -95,10 +99,15 @@ public class BestFirst {
                     //go through every edges connected to current vertex
                     currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge
 
+                    if (lorryUsed && currentEdge.destination.narrowArea)
+                        //if lorry is currently used and the destination is in the narrow area, don't go here
+                        continue;
+
                     if (tempC >= currentEdge.destination.capacity && currentEdge.destination.capacity < heurV[i] && !visitedID.contains(currentEdge.destination.ID) && currentEdge.destination.ID != 0) {
                         /* IF (capacity >= demand) AND (capacity < expected_path_cost) AND (the destination hasn't been visited yet) AND (the dest is not the depot):
                                 choose this path.
                         */
+                        dispatched = true;
                         nextVertex = currentEdge.destination; // path to go
                         heurV[i] = currentEdge.destination.capacity;  //update the path cost value the vertex holds
                         tempD = dT + currentEdge.dist;
@@ -113,6 +122,12 @@ public class BestFirst {
                     heurV[i] = currentEdge.destination.capacity;  //update the path cost value the vertex holds
                     tempD = dT + currentEdge.dist;
                 }
+
+                if (!dispatched && nextVertex.ID == 0) {
+                    outString.append(" --X-> NOT DISPATCHED");
+                    break;
+                }
+
                 visitedID.add(nextVertex.ID); //the nextVertex has been visited.
                 outString.append(" --> ").append(nextVertex);
 
@@ -122,8 +137,7 @@ public class BestFirst {
                 totalCap += nextVertex.capacity;
                 currentVertex = nextVertex;
 
-                if (currentVertex.ID == 0)
-                    //if the vehicle returns to the depot, break the loop/go to the next vehicle
+                if (nextVertex.ID == 0)
                     break;
             }
             visitedID.remove((Integer) 0); //used Integer to make it as an object
