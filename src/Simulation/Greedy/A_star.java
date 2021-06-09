@@ -66,11 +66,14 @@ public class A_star {
             //while all vertices haven't been visited
 
             int tempC;
+            boolean lorryUsed = false;
+            outString.append("---------------------\n");
             if (lorries != 0) {
                 //if there are still lorries to be dispatched out:
                 tempC = 2 * C; //to deduct the capacity in lorry whenever a vertex is visited
                 outString.append("Vehicle ").append(++vehicleCount).append(" (Lorry ").append(++lorryCount).append(")\n");
                 lorries--;
+                lorryUsed = true;
             } else {
                 tempC = C;
                 outString.append("Vehicle ").append(++vehicleCount).append("\n");
@@ -84,6 +87,7 @@ public class A_star {
 
             outString.append(currentVertex);
             int totalCap = 0;
+            boolean dispatched = false;
             for (int i = 0; i < G.size(); i++) {
                 //go through every vertices in the graph
 
@@ -92,15 +96,25 @@ public class A_star {
                     //go through every edges connected to current vertex
                     Edge currentEdge = currentVertex.EdgeList.get(j); //starting from the first edge
 
+                    if (lorryUsed && currentEdge.destination.narrowArea)
+                        //if lorry is currently used and the destination is in the narrow area, don't go here
+                        continue;
+
                     if (tempC >= currentEdge.destination.capacity && dT + currentEdge.dist + currentEdge.destination.capacity < costV[i] && !visitedID.contains(currentEdge.destination.ID)) {
                         /* IF (capacity >= demand) AND (dT + dist + capacity < expected_path_cost) AND (the destination hasn't been visited yet):
                                 choose this path.
                         */
+                        dispatched = true;
                         nextVertex = currentEdge.destination; // path to go
                         costV[i] = dT + currentEdge.dist + currentEdge.destination.capacity;  //update the path cost value the vertex holds
                         tempCap = currentEdge.destination.capacity;
                     }
                 }
+                if (!dispatched && nextVertex.ID == 0) {
+                    outString.append(" --X-> NOT DISPATCHED");
+                    break;
+                }
+
                 visitedID.add(nextVertex.ID); //the nextVertex has been visited.
                 outString.append(" --> ").append(nextVertex);
 
@@ -110,8 +124,7 @@ public class A_star {
                 totalCap += nextVertex.capacity;
                 currentVertex = nextVertex;
 
-                if (currentVertex.ID == 0)
-                    //if the vehicle returns to the depot, break the loop/go to the next vehicle
+                if (nextVertex.ID == 0)
                     break;
             }
             visitedID.remove((Integer) 0); //used Integer to make it as an object
