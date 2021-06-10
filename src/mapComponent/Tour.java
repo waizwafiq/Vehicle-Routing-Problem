@@ -34,22 +34,22 @@ public class Tour {
         StringBuilder sb = new StringBuilder();
         sb.append("Tour\n");
 
-        for(int i=0;i<route.size();i++){
-            sb.append(route.get(i)).append(distanceRoute(route.get(i))).append("\n");
+        for (List<Vertex> vertices : route) {
+            sb.append(vertices).append(distanceRoute(vertices)).append("\n");
         }
 
         return sb.toString();
     }
 
-    double distanceRoute (List<Vertex> vertexList){
-        double distance=0;
-        for(int i=0;i<vertexList.size()-1;i++){
+    double distanceRoute(List<Vertex> vertexList) {
+        double distance = 0;
+        for (int i = 0; i < vertexList.size() - 1; i++) {
             Vertex current = vertexList.get(i);
-            Vertex next = vertexList.get(i+1);
-            double dx = current.coordinateX-next.coordinateX;
-            double dy = current.coordinateY-next.coordinateY;
-            distance+=Math.sqrt( dx*dx + dy*dy);
+            Vertex next = vertexList.get(i + 1);
+            double dx = current.coordinateX - next.coordinateX;
+            double dy = current.coordinateY - next.coordinateY;
+            distance += Math.sqrt(dx * dx + dy * dy);
         }
-    return distance;
+        return distance;
     }
 }
