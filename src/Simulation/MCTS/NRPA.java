@@ -52,7 +52,8 @@ public class NRPA {
 
     private static Tour search(int level, int iterations) {
 
-        Instant start = Instant.now();
+        //Instant start = Instant.now();
+        long start = System.nanoTime();
 
         if (level == 0)
             return rollout();
@@ -67,11 +68,14 @@ public class NRPA {
                     System.out.println("inside search loop\n" + bestTour);
                     adapt(bestTour, level);
                 }
-                //seems like the time is not working bruh
-                System.out.println("time" + Duration.between(start, Instant.now()).getSeconds());
-                if (Duration.between(start, Instant.now()).getSeconds() > 60) {
+
+                long end = System.nanoTime();
+                double duration_seconds = (end - start) * Math.pow(10, -9);
+                System.out.println("Time: " + duration_seconds + "s");
+
+                if (duration_seconds > 60)
                     return bestTour;
-                }
+
             }
             globalPolicy = policy[level - 1];
         }
