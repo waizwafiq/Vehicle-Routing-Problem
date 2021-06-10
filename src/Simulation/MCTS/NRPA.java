@@ -1,9 +1,16 @@
 package Simulation.MCTS;
 
 import map.Map;
+import mapComponent.Edge;
+import mapComponent.Tour;
+import mapComponent.Vertex;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class NRPA {
     private static Map G;
@@ -12,47 +19,100 @@ public class NRPA {
 
     private static ArrayList<Integer> checkedID;
 
-    private static int[][][] policy;
-    private static int[][] globalPolicy;
+    private static double[][][] policy;
+    private static double[][] globalPolicy;
+    private static Tour bestTour;
+    static int ALPHA=1;
 
     public static void run(Map G, int N, int C) {
         NRPA.G = G;
         NRPA.N = N;
         NRPA.C = C;
         checkedID = new ArrayList<>();
-        int level = 3, iterations = 100, ALPHA = 1;
-
-        NRPA.policy = new int[level][N][N];
-
+        int level = 3, iterations = 100;
+        bestTour = new Tour();
+        NRPA.policy = new double[level][N][N];
+        NRPA.globalPolicy = new double[N][N];
+        bestTour.setTotalDistance(Double.POSITIVE_INFINITY);
         //FILL EACH ROW OF THE FIRST LEVEL WITH 0's
-        for (int[][] tubes : policy)
+        for (double[][] tubes : policy)
             Arrays.stream(tubes).forEach(row -> Arrays.fill(row, 0));
+
+        for (double[] ints : globalPolicy) {
+            Arrays.fill(ints, 0);
+        }
+
+      Tour best_tour = search(level, iterations);
+        System.out.println(best_tour+"\n"+best_tour.getTotalDistance());
+
+        System.out.println(Arrays.deepToString(globalPolicy));
+
+
     }
 
-    private static int search(int level, int iterations) {
+    private static Tour search(int level, int iterations) {
+
+        Instant start = Instant.now();
 
         if (level == 0)
             return rollout();
+        else {
+            policy[level-1] = NRPA.globalPolicy;
 
-        policy[level] = NRPA.globalPolicy;
-
-        for (int i = 0; i < iterations; i++) {
-            /*
-            new_tour = search(level-1, iterations)
-            if new_tour's cost < best_tour's cost:
-                best_tour = new_tour
-                adapt(best_tour, level)
-
-            if processing_time exceed time limit:
-                return best_tour
-             */
-
+            for (int i = 0; i < iterations; i++) {
+                System.out.println("iterations "+i);
+                Tour new_tour = search(level-1, i);
+                if (new_tour.getTotalDistance() < bestTour.getTotalDistance()) {
+                    bestTour = new_tour;
+                    System.out.println("inside search loop\n"+bestTour);
+                    adapt(bestTour, level);
+                }
+                //seems like the time is not working bruh
+                System.out.println("time"+Duration.between(start, Instant.now()).getSeconds());
+                if (Duration.between(start, Instant.now()).getSeconds() > 60) {
+                    return bestTour;
+                }
+            }
+            globalPolicy = policy[level-1];
         }
-        globalPolicy = policy[level];
-        return 0;
+
+        return bestTour;
     }
 
-    private static void adapt(/*a_tour, level*/) {
+    private static void adapt(Tour currentTour, int level) {
+        List<Integer> visitedID = new ArrayList<>();
+
+        for (int i = 0; i < currentTour.getRoute().size(); i++) {
+            //in tour have route, in route have list of vertex
+            List<Vertex> route = currentTour.getRoute().get(i);
+            for (int j = 0; j < route.size() - 1; j++) {
+                Vertex stop = route.get(j); //currentStop
+                Vertex nextStop = route.get(j + 1);
+                double z = 0.0;
+                policy[level][stop.ID][nextStop.ID] += ALPHA;
+                ArrayList<Edge> edge = stop.EdgeList;
+
+                //for every possible move that can be made by stop
+                for (int k = 0; k < edge.size(); k++) {
+                    Vertex move = edge.get(k).destination;
+                    if (!visitedID.contains(move.ID)) {
+                        z += Math.exp(globalPolicy[stop.ID][move.ID]);
+                    }
+                }
+
+                for (int k = 0; k < edge.size(); k++) {
+                    Vertex move = edge.get(k).destination;
+                    if (!visitedID.contains(move.ID)) {
+                        policy[level][stop.ID][move.ID] -= ALPHA * (Math.exp(globalPolicy[stop.ID][move.ID]) / z);
+                    }
+                }
+
+                visitedID.add(stop.ID);
+            }
+
+
+        }
+
         /*
         for every route in a_tour
             for every stop in route
@@ -70,46 +130,92 @@ public class NRPA {
 
     }
 
-    private static int rollout() {
-        /*
-        initialize new_tour with first route with first stop at 0  // every route must start and end at depot (ID=0)
-        while true
-            currentStop = new_tour last route last stop
-            find every possible successors that is not yet checked for the currentStop
-            if no successors is available
-                currentRoute is completed and should return to depot
-                if all stop are visited
-                    break while loop  // rollout process is done
-                add new route into new_tour  // else add new vehicle, again start at depot with ID 0
-                continue  // skip to next loop to continue search a route for new vehicle
-            nextStop = select_next_move(currentStop, possible_successors)
-            if add nextStop to currentRoute does not violate any rules
-                add nextStop to currentRoute
-                set nextStop as visited
-            else
-                set nextStop as checked
-        return new_tour
-         */
+    private static Tour rollout() {
+        Tour newTour = new Tour();
+        List<Vertex> newRoute = new ArrayList<>();
+        newRoute.add(G.getHead());
+        newTour.getRoute().add(newRoute);
 
-        return 0;
+
+        List<Integer> visitedForRoute = new ArrayList<>();
+        List<Integer> visitedForSuccessor = new ArrayList<>();
+        List<Integer> possibleSuccessor = new ArrayList<>();
+        int capacity = 0;
+
+
+        while (true) {
+            List<Vertex> lastRoute = newTour.getRoute().get(newTour.getRoute().size() - 1);
+            Vertex currentStop = lastRoute.get(lastRoute.size() - 1);
+            List<Edge> currentEdge = currentStop.EdgeList;
+
+            //finding the possibleSuccessors
+            for (int i = 0; i < currentEdge.size(); i++) {
+                Vertex destination = currentEdge.get(i).destination;
+                if (destination.ID != 0 && !visitedForRoute.contains(destination.ID) && !visitedForSuccessor.contains(destination.ID)) {
+                    possibleSuccessor.add(destination.ID);
+                }
+            }
+            if (possibleSuccessor.isEmpty()) {
+                newRoute.add(G.getVertex(0));
+                if (visitedForRoute.size() == G.size() - 1) { //if all stop are visited
+                    break;
+                }
+                newRoute = new ArrayList<>();
+                newRoute.add(G.getVertex(0));
+                newTour.getRoute().add(newRoute);
+                visitedForSuccessor = new ArrayList<>();
+                capacity=0;
+                continue;
+            }
+
+            Vertex nextStop = select_next_move(currentStop, possibleSuccessor);
+            if (capacity + nextStop.capacity <= C) {
+                capacity += nextStop.capacity;
+                newRoute.add(nextStop);
+                visitedForRoute.add(nextStop.ID);
+
+            } else {
+                visitedForSuccessor.add(nextStop.ID);
+            }
+            possibleSuccessor = new ArrayList<>();
+        }
+        tourDistanceCalculator(newTour);
+        return newTour;
     }
 
-    private static int select_next_move(){
-        /*
-        initialize 1d probability array that have same size with possible_successors
-        sum = 0
-        for i=0 to size of possible_successors
-            probability[i] = Math.exp(globalPolicy[currentStop][possible_successors[i]])
-            sum += probability[i]
-        mrand = new Random().nextDouble() * sum
-        i = 0;
-        sum = probability[0];
-        while sum < mrand
-            sum += probability[++i];
-        return possible_successors[i]
-         */
+    private static Vertex select_next_move(Vertex currentStop, List<Integer> possibleSuccessor) {
+        double[] probability = new double[possibleSuccessor.size()];
+        double sum = 0;
+        for (int i = 0; i < possibleSuccessor.size(); i++) {
+            probability[i] = Math.exp(globalPolicy[currentStop.ID][possibleSuccessor.get(i)]);
+            sum += probability[i];
+        }
 
-        return 0;
+        double mRand = new Random().nextDouble() * sum;
+        sum = probability[0];
+        int i = 0;
+        while (sum < mRand) {
+            sum += probability[++i];
+        }
+        return G.getVertex(possibleSuccessor.get(i));
+
+    }
+
+    private static void tourDistanceCalculator(Tour currentTour){
+        double totalDistance = 0;
+        List<List<Vertex>> allRoute = currentTour.getRoute();
+        for(int i=0;i< allRoute.size();i++){
+            List<Vertex> route = allRoute.get(i);
+
+            for(int j=0;j<route.size()-1;j++){
+                Vertex current = route.get(j);
+                Vertex next = route.get(j+1);
+                double dx = current.coordinateX-next.coordinateX;
+                double dy = current.coordinateY-next.coordinateY;
+                totalDistance+=Math.sqrt( dx*dx + dy*dy);
+            }
+        }
+         currentTour.setTotalDistance(totalDistance);
     }
 
 }

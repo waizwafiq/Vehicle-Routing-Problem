@@ -200,7 +200,7 @@ public class DepthFirst {
             if (nodes[i] == 0) {
                 continue;
             }
-            if (visited.contains(" " + nodes[i])) {
+            if (visited.contains(" " + nodes[i]+",")) {
                 return true;
             }
 
@@ -209,8 +209,8 @@ public class DepthFirst {
         return false;
     }
     private static boolean StringContainAllNodes(String visited){
-        for(int i=0;i<G.size();i++){
-            if(!visited.contains(" "+i)) {
+        for(int i=1;i<G.size();i++){
+            if(!visited.contains(" "+i+",")) {
                 return false;
             }
 
@@ -223,7 +223,7 @@ public class DepthFirst {
             System.out.print("Current "+current);
             List<Path> currentEdge = current.getPathList();
             for(int j=0;j< currentEdge.size();j++){
-                System.out.print("Edge "+j+" "+currentEdge.get(j));
+                System.out.print("Edge "+currentEdge.get(j));
             }
             System.out.println();
         }
