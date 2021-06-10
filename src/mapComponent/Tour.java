@@ -34,8 +34,10 @@ public class Tour {
         StringBuilder sb = new StringBuilder();
         sb.append("Tour\n");
 
-        for (List<Vertex> vertices : route) {
-            sb.append(vertices).append(distanceRoute(vertices)).append("\n");
+        for (int i = 0; i < route.size(); i++) {
+            sb.append("Vehicle ").append(i + 1).append("\n");
+            sb.append(route.get(i)).append("\n");
+            sb.append("Cost: ").append(distanceRoute(route.get(i))).append("\n");
         }
 
         return sb.toString();

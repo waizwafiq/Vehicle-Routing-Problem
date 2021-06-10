@@ -45,7 +45,7 @@ public class NRPA {
         }
 
         Tour best_tour = search(level, iterations);
-        System.out.println(best_tour + "\n" + best_tour.getTotalDistance());
+        System.out.println(best_tour + "\nTotal Cost: " + best_tour.getTotalDistance());
 
         System.out.println(Arrays.deepToString(globalPolicy));
     }
