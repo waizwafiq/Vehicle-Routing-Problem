@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 
 import Simulation.Greedy.*;
+import Simulation.MCTS.NRPA;
 import mapComponent.Vertex;
 import Simulation.Basic.*;
 import map.Map;
@@ -20,11 +21,12 @@ public class Main {
         System.out.println("\nC = " + C);
 
         //DepthFirst.run(map, C);
-        BlindDFS.run(map, N, C, lorries);
-        Dijkstra.run(map, C, lorries);
-        A_star.run(map, C, lorries);
-        BestFirst.run(map, C, lorries);
-        BestPath.run(map, C, lorries);
+        //BlindDFS.run(map, N, C, lorries);
+        //Dijkstra.run(map, C, lorries);
+        //A_star.run(map, C, lorries);
+        //BestFirst.run(map, C, lorries);
+        //BestPath.run(map, C, lorries);
+        NRPA.run(map, N, C);
 
         /*
         progressBar("Printing tree... ", 3);
