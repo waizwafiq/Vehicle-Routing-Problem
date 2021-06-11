@@ -20,13 +20,17 @@ public class NRPA {
     private static double[][][] policy;
     private static double[][] globalPolicy;
     private static Tour bestTour;
-    static int ALPHA = 1;
+    private static double ALPHA;
 
     public static String run(Map G, int N, int C) {
+        return run(G, N, C, 3, 100, 1);
+    }
+
+    public static String run(Map G, int N, int C, int level, int iterations, double ALPHA) {
         NRPA.G = G;
         NRPA.N = N;
         NRPA.C = C;
-        int level = 3, iterations = 100;
+        NRPA.ALPHA = ALPHA;
 
         bestTour = new Tour();
         NRPA.policy = new double[level][N][N];
