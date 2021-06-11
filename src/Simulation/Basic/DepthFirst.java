@@ -20,15 +20,15 @@ public class DepthFirst {
     private static final long maxTime = 60;
 
 
-    public static void run(Map G, int C) {
-        //initiazlize everything
+    public static String run(Map G, int C) {
+        //initialize everything
         pathMap = new HashMap<>();
         pathList = new ArrayList<>();
         route = new ArrayList<>();
         tree = new ArrayList<>();
         DepthFirst.G = G;
         DepthFirst.C = C;
-        System.out.println("\n---DF Search---\nSearching...");
+        StringBuilder out = new StringBuilder("\n---DF Search---\nSearching...\n");
         start = System.currentTimeMillis();
         //System.out.println(result);
         generateTree(0, 0, "");
@@ -49,13 +49,13 @@ public class DepthFirst {
             System.out.println(element);
         }
         String[] bestTour = route.get(route.size() - 1).split(" ");
-        System.out.println("Tour cost : " + tourDistance);
+        out.append("Tour cost : ").append(tourDistance).append("\n");
         for (int i = 0; i < bestTour.length; i++) {
-            System.out.println("Vehicle " + (i + 1));
-            System.out.println(pathList.get(Integer.parseInt(bestTour[i])));
+            out.append("Vehicle ").append(i + 1).append("\n");
+            out.append(pathList.get(Integer.parseInt(bestTour[i]))).append("\n");
         }
-
-        System.out.println("Execution time: " + (double) (end - start) * Math.pow(10, -6) + "ms\n");
+        out.append("Execution time: ").append((double) (end - start) * Math.pow(10, -6)).append("ms\n\n");
+        return out.toString();
     }
 
     //generate tree (limiting the capacity)
