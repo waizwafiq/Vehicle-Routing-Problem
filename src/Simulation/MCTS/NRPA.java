@@ -36,6 +36,8 @@ public class NRPA {
         NRPA.globalPolicy = new double[N][N];
         bestTour.setTotalDistance(Double.POSITIVE_INFINITY);
 
+        System.out.println("-----NRPA-MCTS-----");
+
         //FILL EACH ROW OF THE FIRST LEVEL WITH 0's
         for (double[][] tubes : policy)
             Arrays.stream(tubes).forEach(row -> Arrays.fill(row, 0));
@@ -47,12 +49,11 @@ public class NRPA {
         Tour best_tour = search(level, iterations);
         System.out.println(best_tour + "\nTotal Cost: " + best_tour.getTotalDistance());
 
-        System.out.println(Arrays.deepToString(globalPolicy));
+        //System.out.println(Arrays.deepToString(globalPolicy));
     }
 
     private static Tour search(int level, int iterations) {
 
-        //Instant start = Instant.now();
         long start = System.nanoTime();
 
         if (level == 0)
@@ -61,17 +62,15 @@ public class NRPA {
             policy[level - 1] = NRPA.globalPolicy;
 
             for (int i = 0; i < iterations; i++) {
-                System.out.println("iterations " + i);
+                //System.out.println("iterations " + i);
                 Tour new_tour = search(level - 1, i);
                 if (new_tour.getTotalDistance() < bestTour.getTotalDistance()) {
                     bestTour = new_tour;
-                    System.out.println("inside search loop\n" + bestTour);
                     adapt(bestTour, level);
                 }
 
                 long end = System.nanoTime();
                 double duration_seconds = (end - start) * Math.pow(10, -9);
-                System.out.println("Time: " + duration_seconds + "s");
 
                 if (duration_seconds > 60)
                     return bestTour;
