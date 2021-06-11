@@ -18,7 +18,7 @@ public class BlindDFS {
         BlindDFS.N = N;
         BlindDFS.C = C;
 
-        System.out.println("---Blind DFS Search---\n");
+        System.out.println("---Blind Depth-First Search---\n");
         long start = System.nanoTime();
         String result = search();
         long end = System.nanoTime();
