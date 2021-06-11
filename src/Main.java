@@ -10,23 +10,24 @@ import map.Map;
 
 
 public class Main {
-    private static final String path = "Sample\\Sample4.txt";
+    private static final String path = "Sample\\Sample5.txt";
     private static int N, C;
     private static final Map map = new Map();
 
     public static void main(String[] args) {
-        readInputFile(3, 2, 50);
+        readInputFile(false);
         map.printConnections();
         int lorries = 5;
         System.out.println("\nC = " + C);
 
+        NRPA.run(map, N, C);
         //DepthFirst.run(map, C);
         //BlindDFS.run(map, N, C, lorries);
         //Dijkstra.run(map, C, lorries);
         //A_star.run(map, C, lorries);
         //BestFirst.run(map, C, lorries);
         //BestPath.run(map, C, lorries);
-        NRPA.run(map, N, C);
+
 
         /*
         progressBar("Printing tree... ", 3);
