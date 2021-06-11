@@ -17,18 +17,15 @@ public class NRPA {
     private static int N, C;
     private static double tourCost;
 
-    private static ArrayList<Integer> checkedID;
-
     private static double[][][] policy;
     private static double[][] globalPolicy;
     private static Tour bestTour;
     static int ALPHA = 1;
 
-    public static void run(Map G, int N, int C) {
+    public static String run(Map G, int N, int C) {
         NRPA.G = G;
         NRPA.N = N;
         NRPA.C = C;
-        checkedID = new ArrayList<>();
         int level = 3, iterations = 100;
 
         bestTour = new Tour();
@@ -36,7 +33,7 @@ public class NRPA {
         NRPA.globalPolicy = new double[N][N];
         bestTour.setTotalDistance(Double.POSITIVE_INFINITY);
 
-        System.out.println("-----NRPA-MCTS-----");
+        String out = "-----NRPA-MCTS-----\n";
 
         //FILL EACH ROW OF THE FIRST LEVEL WITH 0's
         for (double[][] tubes : policy)
@@ -47,8 +44,10 @@ public class NRPA {
         }
 
         Tour best_tour = search(level, iterations);
-        System.out.println(best_tour + "\nTotal Cost: " + best_tour.getTotalDistance());
 
+        out += "\nTotal Cost: " + best_tour.getTotalDistance() + "\n" + best_tour;
+
+        return out;
         //System.out.println(Arrays.deepToString(globalPolicy));
     }
 
