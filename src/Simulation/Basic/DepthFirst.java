@@ -16,7 +16,7 @@ public class DepthFirst {
     private static List<Path> pathList;
     private static List<String> route;
     private static double tourDistance = Double.MAX_VALUE;
-    private static long  start,end,time;
+    private static long start, end, time;
     private static final long maxTime = 60;
 
 
@@ -28,7 +28,7 @@ public class DepthFirst {
         tree = new ArrayList<>();
         DepthFirst.G = G;
         DepthFirst.C = C;
-        System.out.println("---DF Search---\n");
+        System.out.println("\n---DF Search---\nSearching...");
         start = System.currentTimeMillis();
         //System.out.println(result);
         generateTree(0, 0, "");
@@ -37,21 +37,21 @@ public class DepthFirst {
 
         //finding the best tour, the last in list of "route" is considered the lowest
         end = System.currentTimeMillis();
-        for(int i=0;i< pathList.size() && time < maxTime ;i++){
-            System.out.println("Current time in for loop : "+((end - start)/1000));
+        for (int i = 0; i < pathList.size() && time < maxTime; i++) {
+            //System.out.println("Current time in for loop : " + ((end - start) / 1000));
 
-            bestTour(i,"","",0.0);
+            bestTour(i, "", "", 0.0);
 
         }
         //printAllEdge();
         //printing the best tour
-        for( String element : route){
+        for (String element : route) {
             System.out.println(element);
         }
-        String[] bestTour = route.get(route.size()-1).split(" ");
-        System.out.println("Tour cost : "+tourDistance);
-        for(int i=0;i< bestTour.length;i++){
-            System.out.println("Vehicle "+(i+1));
+        String[] bestTour = route.get(route.size() - 1).split(" ");
+        System.out.println("Tour cost : " + tourDistance);
+        for (int i = 0; i < bestTour.length; i++) {
+            System.out.println("Vehicle " + (i + 1));
             System.out.println(pathList.get(Integer.parseInt(bestTour[i])));
         }
 
@@ -169,11 +169,11 @@ public class DepthFirst {
     }
 
     //finding the bset tour
-    private static void bestTour(int pathID, String visitedPath,String visitedNodes,double distance) {
+    private static void bestTour(int pathID, String visitedPath, String visitedNodes, double distance) {
         end = System.currentTimeMillis();
-        time = ((end - start)/1000);
-        System.out.println("Current time : "+time);
-        if(time < maxTime) {
+        time = ((end - start) / 1000);
+        //System.out.println("Current time : "+time);
+        if (time < maxTime) {
             Path currentPath = pathList.get(pathID);
             visitedPath += pathID + " ";
             visitedNodes += Arrays.toString(currentPath.getNodes());
@@ -196,11 +196,11 @@ public class DepthFirst {
     }
 
     private static boolean haveIntegerInString(Integer[] nodes, String visited) {
-        for (int i = 0; i < nodes.length; i++) {
-            if (nodes[i] == 0) {
+        for (Integer node : nodes) {
+            if (node == 0) {
                 continue;
             }
-            if (visited.contains(" " + nodes[i]+",")) {
+            if (visited.contains(" " + node + ",")) {
                 return true;
             }
 
@@ -208,22 +208,23 @@ public class DepthFirst {
 
         return false;
     }
-    private static boolean StringContainAllNodes(String visited){
-        for(int i=1;i<G.size();i++){
-            if(!visited.contains(" "+i+",")) {
+
+    private static boolean StringContainAllNodes(String visited) {
+        for (int i = 1; i < G.size(); i++) {
+            if (!visited.contains(" " + i + ",")) {
                 return false;
             }
 
         }
         return true;
     }
-    private static void printAllEdge(){
-        for(int i=0;i<pathList.size();i++){
-            Path current = pathList.get(i);
-            System.out.print("Current "+current);
+
+    private static void printAllEdge() {
+        for (Path current : pathList) {
+            System.out.print("Current " + current);
             List<Path> currentEdge = current.getPathList();
-            for(int j=0;j< currentEdge.size();j++){
-                System.out.print("Edge "+currentEdge.get(j));
+            for (Path path : currentEdge) {
+                System.out.print("Edge " + path);
             }
             System.out.println();
         }
