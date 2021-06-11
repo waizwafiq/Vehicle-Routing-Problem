@@ -7,7 +7,7 @@ import map.Path;
 
 import java.util.*;
 
-public class DepthFirst {
+public class RevisedDFS {
     //the id is array
     private static Map G;
     private static int C;
@@ -26,9 +26,9 @@ public class DepthFirst {
         pathList = new ArrayList<>();
         route = new ArrayList<>();
         tree = new ArrayList<>();
-        DepthFirst.G = G;
-        DepthFirst.C = C;
-        StringBuilder out = new StringBuilder("\n---DF Search---\nSearching...\n");
+        RevisedDFS.G = G;
+        RevisedDFS.C = C;
+        StringBuilder out = new StringBuilder("\n---Revised Depth-First Search---\n");
         start = System.currentTimeMillis();
         //System.out.println(result);
         generateTree(0, 0, "");
@@ -46,7 +46,7 @@ public class DepthFirst {
         //printAllEdge();
         //printing the best tour
         for (String element : route) {
-            System.out.println(element);
+            out.append(element).append("\n");
         }
         String[] bestTour = route.get(route.size() - 1).split(" ");
         out.append("Tour cost : ").append(tourDistance).append("\n");
