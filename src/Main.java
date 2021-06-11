@@ -1,6 +1,9 @@
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
+import java.util.ConcurrentModificationException;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import Simulation.Greedy.*;
 import Simulation.MCTS.NRPA;
@@ -16,36 +19,37 @@ public class Main {
 
     public static void main(String[] args) {
         readInputFile(false);
-        map.printConnections();
+        progressBar("Printing map...", 1.2);
         int lorries = 5;
-        System.out.println("\nC = " + C);
+        System.out.println("Number of lorries = " + lorries + "\nC = " + C);
 
-        NRPA.run(map, N, C);
-        //DepthFirst.run(map, C);
-        //BlindDFS.run(map, N, C, lorries);
-        //Dijkstra.run(map, C, lorries);
-        //A_star.run(map, C, lorries);
-        //BestFirst.run(map, C, lorries);
-        //BestPath.run(map, C, lorries);
-
-
-        /*
-        progressBar("Printing tree... ", 3);
         map.printConnections();
 
-        System.out.println("\n");
-        progressBar("Printing tree... ", 3);
-        Tree.run(map, C); // generate Tree
+        final String[] test = new String[1];
 
-        //Dijkstra.run(map, C); //duplicate to get the best exec. time
-        progressBar("Searching using Greedy Algorithms... ", 7);
-        Dijkstra.run(map, C);
-        A_star.run(map, C);
-        BestFirst.run(map, C);
-        BestPath.run(map, C);
-        BestPath_v2.run(map, C);
+        Runnable backGroundRunnable = () -> test[0] = NRPA.run(map, N, C);
+        Thread t1 = new Thread(backGroundRunnable);
+        t1.start();
+
+        progressBar("Searching using Basic Simulations... ", 2);
         //DepthFirst.run(map, C);
-        */
+        BlindDFS.run(map, N, C, lorries);
+
+        progressBar("Searching using Greedy Simulation... ", 2);
+        Dijkstra.run(map, C, lorries);
+        A_star.run(map, C, lorries);
+        BestFirst.run(map, C, lorries);
+        BestPath.run(map, C, lorries);
+
+        try {
+            progressBar("Searching using MCTS Algorithm... ", 6);
+            while (test[0] == null) {
+                System.out.print("");
+            }
+        } catch (ConcurrentModificationException e) {
+            test[0] = NRPA.run(map, N, C);
+        }
+        System.out.println(test[0]);
     }
 
     public static void readInputFile(boolean site_dependent) {
