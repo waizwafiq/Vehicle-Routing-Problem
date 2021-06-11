@@ -2,8 +2,6 @@ import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 import java.util.ConcurrentModificationException;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import Simulation.Greedy.*;
 import Simulation.MCTS.NRPA;
@@ -20,25 +18,32 @@ public class Main {
     public static void main(String[] args) {
         readInputFile(false);
         progressBar("Printing map...", 1.2);
-        int lorries = 5;
+        int lorries = 0;
         System.out.println("Number of lorries = " + lorries + "\nC = " + C);
 
         map.printConnections();
 
+        double startup_time;
+        if (N - 1 <= 10)
+            startup_time = 6;
+        else
+            startup_time = 60;
+
         final String[] concur = new String[2];
         try {
             Runnable r1 = () -> concur[0] = NRPA.run(map, N, C);
-            Runnable r2 = () -> concur[1] = DepthFirst.run(map, C);
+            Runnable r2 = () -> {
+                if (N <= 20)
+                    concur[1] = RevisedDFS.run(map, C);
+            };
             Thread t1 = new Thread(r1);
             Thread t2 = new Thread(r2);
             t1.start();
             t2.start();
 
-            progressBar("Starting up simulations... ", 10);
+            progressBar("Starting up simulations... ", startup_time);
 
             progressBar("Searching using Basic Simulations... ", 2);
-            while (concur[1] == null)
-                System.out.print("");
             System.out.println(concur[1]);
             BlindDFS.run(map, N, C, lorries);
 
