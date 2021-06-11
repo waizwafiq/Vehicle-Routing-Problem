@@ -13,7 +13,7 @@ import map.Map;
 
 
 public class Main {
-    private static final String path = "Sample\\Sample5.txt";
+    private static final String path = "Sample\\Sample2.txt";
     private static int N, C;
     private static final Map map = new Map();
 
@@ -25,31 +25,37 @@ public class Main {
 
         map.printConnections();
 
-        final String[] test = new String[1];
-
-        Runnable backGroundRunnable = () -> test[0] = NRPA.run(map, N, C);
-        Thread t1 = new Thread(backGroundRunnable);
-        t1.start();
-
-        progressBar("Searching using Basic Simulations... ", 2);
-        //DepthFirst.run(map, C);
-        BlindDFS.run(map, N, C, lorries);
-
-        progressBar("Searching using Greedy Simulation... ", 2);
-        Dijkstra.run(map, C, lorries);
-        A_star.run(map, C, lorries);
-        BestFirst.run(map, C, lorries);
-        BestPath.run(map, C, lorries);
-
+        final String[] concur = new String[2];
         try {
-            progressBar("Searching using MCTS Algorithm... ", 6);
-            while (test[0] == null) {
+            Runnable r1 = () -> concur[0] = NRPA.run(map, N, C);
+            Runnable r2 = () -> concur[1] = DepthFirst.run(map, C);
+            Thread t1 = new Thread(r1);
+            Thread t2 = new Thread(r2);
+            t1.start();
+            t2.start();
+
+            progressBar("Starting up simulations... ", 10);
+
+            progressBar("Searching using Basic Simulations... ", 2);
+            while (concur[1] == null)
                 System.out.print("");
-            }
+            System.out.println(concur[1]);
+            BlindDFS.run(map, N, C, lorries);
+
+            progressBar("Searching using Greedy Simulation... ", 2);
+            Dijkstra.run(map, C, lorries);
+            A_star.run(map, C, lorries);
+            BestFirst.run(map, C, lorries);
+            BestPath.run(map, C, lorries);
+
+            progressBar("Searching using MCTS Algorithm... ", 6);
+            while (concur[0] == null)
+                System.out.print("");
+
         } catch (ConcurrentModificationException e) {
-            test[0] = NRPA.run(map, N, C);
+            concur[0] = NRPA.run(map, N, C);
         }
-        System.out.println(test[0]);
+        System.out.println(concur[0]);
     }
 
     public static void readInputFile(boolean site_dependent) {
