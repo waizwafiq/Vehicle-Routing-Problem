@@ -19,7 +19,7 @@ public class BestFirst {
         BestFirst.G = G;
         BestFirst.N = N;
         BestFirst.C = C;
-        System.out.println("---Best-Path Search---\n");
+        System.out.println("---Best-First Search---\n");
         long start = System.nanoTime();
         String result = search();
         long end = System.nanoTime();
@@ -106,11 +106,10 @@ public class BestFirst {
                         tempD = currentEdge.dist;
                     }
                 }
-
-                if (tempC < nextVertex.capacity || visitedID.size() == N - 1) {
+                if (tempC < nextVertex.capacity || visitedID.size() == N - 1 || currentVertex == nextVertex) {
                     Edge currentEdge = nextVertex.EdgeList.get(0);
                     nextVertex = G.getHead();
-                    tempD = currentEdge.dist;
+                    tempD = Map.computeDistance(currentVertex, nextVertex);
                 }
 
                 if (!dispatched && nextVertex.ID == 0) {
