@@ -66,7 +66,7 @@ public class BestFirst {
         StringBuilder outString = new StringBuilder();
 
         int vehicleCount = 0, lorryCount = 0;
-        while (visitedID.size() != hV.length - 1) {
+        while (visitedID.size() != N - 1) {
             //while all vertices haven't been visited
             int tempC;
             if (lorries != 0) {
@@ -125,11 +125,12 @@ public class BestFirst {
                 tempC -= nextVertex.capacity; //deduct capacity
                 totalCap += nextVertex.capacity;
                 currentVertex = nextVertex;
-
                 if (currentVertex.ID == 0)
                     //if the vehicle returns to the depot, break the loop/go to the next vehicle
                     break;
             }
+            if (currentVertex.ID == 0 && nextVertex.ID == 0 && visitedID.size() == N - 1)
+                break;
             visitedID.remove((Integer) 0); //used Integer to make it as an object
             outString.append("\nCapacity: ").append(totalCap);
             outString.append("\nCost: ").append(dT).append("\n");
