@@ -11,7 +11,7 @@ import map.Map;
 
 
 public class Main {
-    private static final String path = "Sample\\Sample2.txt";
+    private static final String path = "Sample\\n7-c27.txt";
     private static int N, C;
     private static final Map map = new Map();
 
@@ -50,7 +50,7 @@ public class Main {
             progressBar("Searching using Greedy Simulation... ", 2);
             Dijkstra.run(map, C, lorries);
             A_star.run(map, C, lorries);
-            BestFirst.run(map, C, lorries);
+            BestFirst.run(map, N, C, lorries);
             BestPath.run(map, C, lorries);
 
             progressBar("Searching using MCTS Algorithm... ", 6);
