@@ -88,7 +88,7 @@ public class Map {
         }
     }
 
-    private double computeDistance(Vertex v1, Vertex v2) {
+    public static double computeDistance(Vertex v1, Vertex v2) {
         double dx = v1.coordinateX - v2.coordinateX;
         double dy = v1.coordinateY - v2.coordinateY;
 
