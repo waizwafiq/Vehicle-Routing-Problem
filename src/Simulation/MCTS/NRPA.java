@@ -5,8 +5,6 @@ import mapComponent.Edge;
 import mapComponent.Tour;
 import mapComponent.Vertex;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
