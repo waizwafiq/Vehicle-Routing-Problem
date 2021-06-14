@@ -129,12 +129,13 @@ public class BestFirst {
                     //if the vehicle returns to the depot, break the loop/go to the next vehicle
                     break;
             }
-            if (currentVertex.ID == 0 && nextVertex.ID == 0 && visitedID.size() == N - 1)
-                break;
             visitedID.remove((Integer) 0); //used Integer to make it as an object
             outString.append("\nCapacity: ").append(totalCap);
             outString.append("\nCost: ").append(dT).append("\n");
             tourCost += dT;
+
+            if (currentVertex.ID == 0 && nextVertex.ID == 0 && visitedID.size() == N)
+                break;
         }
         return outString.toString();
     }
