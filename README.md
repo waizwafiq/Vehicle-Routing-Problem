@@ -15,3 +15,7 @@ A simulation is needed for delivery vehicles to travel all around the map and fi
 
 **Timeline** <br>
 May 2021 - Present
+
+This is the **CLI** part.
+
+**GUI: https://github.com/zulfathihanafi/GraphSimulation**
