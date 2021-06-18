@@ -14,7 +14,7 @@ Actually, it is more about simulation on traversal search algorithms in graphs.
 A simulation is needed for delivery vehicles to travel all around the map and find the shortest path to deliver the packages while the capacity in the vehicle is sufficient.
 
 **Timeline** <br>
-May 2021 - Present
+30th May 2021 - 17th July 2021
 
 <hr>
 
